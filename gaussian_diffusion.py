@@ -12,7 +12,7 @@ import torch
 import sys
 sys.path.append('.')
 
-from .utils.nn import mean_flat
+from utils.nn import mean_flat
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

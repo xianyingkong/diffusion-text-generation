@@ -5,12 +5,12 @@ import torch as th
 import torch.distributed as dist
 from torch.optim import AdamW
 
-from diffuseq.utils import dist_util, logger
-from diffuseq.utils.fp16_util import (
+from utils import dist_util
+from utils.fp16_util import (
     zero_grad
 )
-from diffuseq.utils.nn import update_ema
-from diffuseq.step_sample import LossAwareSampler, UniformSampler
+from utils.nn import update_ema
+from step_sample import LossAwareSampler, UniformSampler
 
 # For ImageNet experiments, this was a good default value.
 # We found that the lg_loss_scale quickly climbed to
