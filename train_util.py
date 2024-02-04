@@ -12,12 +12,6 @@ from utils.fp16_util import (
 from utils.nn import update_ema
 from step_sample import LossAwareSampler, UniformSampler
 
-# For ImageNet experiments, this was a good default value.
-# We found that the lg_loss_scale quickly climbed to
-# 20-21 within the first ~1K steps of training.
-INITIAL_LOG_LOSS_SCALE = 20.0
-
-
 class TrainLoop:
     def __init__(
         self,
@@ -29,16 +23,9 @@ class TrainLoop:
         microbatch,
         lr,
         ema_rate,
-        log_interval,
-        save_interval,
-        resume_checkpoint,
-        use_fp16=False,
-        fp16_scale_growth=1e-3,
         schedule_sampler=None,
         weight_decay=0.0,
-        learning_steps=0,
-        checkpoint_path='',
-        gradient_clipping=-1.,
+        epochs=0,
         eval_data=None,
         eval_interval=-1,
     ):
@@ -55,19 +42,15 @@ class TrainLoop:
             else [float(x) for x in ema_rate.split(",")]
         )
         self.eval_interval = eval_interval
-        self.fp16_scale_growth = fp16_scale_growth
         self.schedule_sampler = schedule_sampler or UniformSampler(diffusion)
         self.weight_decay = weight_decay
-        self.learning_steps = learning_steps
+        self.learning_steps = epochs
 
         self.step = 0
 
         self.model_params = list(self.model.parameters())
         self.master_params = self.model_params
-        self.lg_loss_scale = INITIAL_LOG_LOSS_SCALE
         self.sync_cuda = th.cuda.is_available()
-
-        self.checkpoint_path = checkpoint_path # DEBUG **
 
         self.opt = AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
@@ -78,7 +61,6 @@ class TrainLoop:
         while (
             not self.learning_steps or self.step < self.learning_steps
         ):
-            print(self.step)
             batch, cond = next(self.data)
             self.run_step(batch, cond)
             if self.eval_data is not None and self.step % self.eval_interval == 0:
@@ -142,6 +124,7 @@ class TrainLoop:
 
             loss = (losses["loss"] * weights).mean()
             loss.backward()
+            print(f'Epoch {self.step} Loss: {loss.detach()}')
 
     def optimize_normal(self):
         self._anneal_lr()
