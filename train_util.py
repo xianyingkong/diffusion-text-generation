@@ -10,7 +10,7 @@ from utils.fp16_util import (
     zero_grad
 )
 from utils.nn import update_ema
-from step_sample import LossAwareSampler, UniformSampler
+from utils.step_sample import LossAwareSampler, UniformSampler
 
 class TrainLoop:
     def __init__(
