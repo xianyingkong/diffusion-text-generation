@@ -9,7 +9,7 @@ Clone this repository locally
 [Optional, but recommended] Create a virtual environment: python -m venv [venv_name]
 To install the dependencies, run the following command from the root directory of the project: pip install -r requirements.txt
 To train a model, run python run.py build
-This loads the MNIST test data, trains a mini model with 5 epochs, and saves the model and network into the output/ directory
+This loads the Shaespeare test data, trains a mini model with 5 epochs, and saves the model and network into the output/ directory
 Software & Spec
 All dependencies is listed in requirements.txt file. For all our experiments, we used 1 GPU, 4 CPUs and 80GB RAM.
 
