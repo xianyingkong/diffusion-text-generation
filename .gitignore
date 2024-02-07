@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 data/
+models/
 utils/__pycache__/
 __pycache__/
 *.py[cod]
