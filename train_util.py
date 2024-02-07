@@ -1,8 +1,7 @@
 import copy
 import functools
-
-import torch as th
-import torch.distributed as dist
+import torch
+import numpy as np
 from torch.optim import AdamW
 
 from utils import dist_util
@@ -50,13 +49,10 @@ class TrainLoop:
 
         self.model_params = list(self.model.parameters())
         self.master_params = self.model_params
-        self.sync_cuda = th.cuda.is_available()
 
         self.opt = AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
         
-        self.use_ddp = False
-
     def run_loop(self):
         while (
             not self.learning_steps or self.step < self.learning_steps
@@ -74,7 +70,7 @@ class TrainLoop:
         self.optimize_normal()
 
     def forward_only(self, batch, cond):
-        with th.no_grad():
+        with torch.no_grad():
             zero_grad(self.model_params)
             for i in range(0, batch.shape[0], self.microbatch):
                 micro = batch[i: i + self.microbatch].to(dist_util.dev())
@@ -97,6 +93,7 @@ class TrainLoop:
 
 
     def forward_backward(self, batch, cond):
+        all_loss = []
         zero_grad(self.model_params)
         for i in range(0, batch.shape[0], self.microbatch):
             micro = batch[i : i + self.microbatch].to(dist_util.dev())
@@ -124,7 +121,8 @@ class TrainLoop:
 
             loss = (losses["loss"] * weights).mean()
             loss.backward()
-            print(f'Epoch {self.step} Loss: {loss.detach()}')
+            all_loss.append(loss.detach().cpu())
+        print(f'Epoch {self.step} Loss: {np.mean(all_loss)}')
 
     def optimize_normal(self):
         self._anneal_lr()
