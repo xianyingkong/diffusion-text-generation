@@ -1,19 +1,22 @@
-# Diffusion Model For Text Generation
-## 23-24 DSC Capstone Project Description
-This project aims to explore the ability to use diffusion models to generate text. More specifically we implemented the a Diffusion model that is comprised of the BERT Transformer and is trained on Skaepeare text utilzing the diffusion process. We then measure the clarity and ability of the mdoel to generate text that mimics shakespeare.
+# Diffusion Model For Text Generation - DSC180B B05
+## Project Description
+This project aims to explore the ability to use diffusion models to generate text. More specifically we implemented the a diffusion model that is comprised of a BERT Transformer and is trained on Shakespeare text. We then measure the clarity and ability of the model to generate text that mimics Shakespeare's.
 
-If you are interested in training a mini Text diffusion model, the data folder contains Json dataset (subset of the full dataset) - 20 data points of lines used by Shakesperae and their target outputs. The full training process is expected to take around 5-10 minutes  for the mini dataset Shakespeare dataset.
+If you are interested in training a mini-text diffusion model, the `data/mini-shakespeare` folder contains training and test dataset - both of which are a small subset of the full dataset. The full training process is expected to take around 5 minutes for the mini dataset Shakespeare dataset. 
 
 ## To train the Text Diffusion model
-Clone this repository locally
-[Optional, but recommended] Create a virtual environment: python -m venv [venv_name]
-To install the dependencies, run the following command from the root directory of the project: pip install -r requirements.txt
-To train a model, run python run.py build
-This loads the Shaespeare test data, trains a mini model with 5 epochs, and saves the model and network into the output/ directory
-Software & Spec
-All dependencies is listed in requirements.txt file. For all our experiments, we used 1 GPU, 4 CPUs and 80GB RAM.
+- Clone this repository locally
+- [Optional, but recommended] Create a virtual environment: `python -m venv .venv`
+- To install the dependencies, run the following command from the root directory of the project: `pip install -r requirements.txt`
+- To train a model, run `python run.py`
+    - This loads the mini Shakespeare data, trains a mini model with 100 epochs, and saves generated sequence into the `output/` directory
+    - Note that 100 epochs are strictly insufficient for the model to learn and generate meaningful output. However, for convenience of user testing, we set the default as 100 epochs
+
+The specifications of experiment can be found in the config file in the `config/` directory
+
+## Software & Spec
+All dependencies is listed in `requirements.txt` file. For all our experiments, we used 1 GPU
 
 ## Reference
-Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. arXiv preprint arXiv:2006.11239, 2020
-Eliya Nachmani, Robin San Roman, and Lior Wolf. Non Gaussian Denoising Diffusion Models. arXiv preprint arXiv:2106.07582, 2021
-Tien Chen. On the Importance of Noise Scheduling for Diffusion Models. arXiv:2301.10972 [cs.CV]
+- Gong, Shansan, et al. "Diffuseq: Sequence to sequence text generation with diffusion models." arXiv preprint arXiv:2210.08933 (2022).
+- Li, Xiang, et al. "Diffusion-lm improves controllable text generation." Advances in Neural Information Processing Systems 35 (2022): 4328-4343.
