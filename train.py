@@ -54,6 +54,8 @@ class TrainLoop:
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
         
     def run_loop(self):
+        print("\n\n======== Training starts now ========\n\n")
+        
         while (
             not self.learning_steps or self.step < self.learning_steps
         ):
