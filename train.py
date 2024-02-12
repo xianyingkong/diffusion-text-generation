@@ -124,7 +124,7 @@ class TrainLoop:
             loss = (losses["loss"] * weights).mean()
             loss.backward()
             all_loss.append(loss.detach().cpu())
-        print(f'Epoch {self.step} Loss: {np.mean(all_loss)}')
+        print(f'Epoch {self.step}/{self.learning_steps} Loss: {np.mean(all_loss)}')
 
     def optimize_normal(self):
         self._anneal_lr()

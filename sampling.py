@@ -135,9 +135,9 @@ def sampling(
             tokens = tokenizer.decode_token(seq[len_x:])
             word_lst_recover.append(tokens)
         
-        output = []
-        for source, ref, recover in zip(word_lst_source, word_lst_recover, word_lst_ref):
-            output.append({'source': source, 'target': ref, 'predicted': recover})
+    output = []
+    for i in range(len(word_lst_recover)):
+        output.append({'source': word_lst_source[i], 'target': word_lst_ref[i], 'predicted': word_lst_recover[i]})
         
     dt = datetime.now().strftime("%Y_%m_%d-%I_%M_%p")
     save_path = os.path.join(output_folder, f'output_{dt}.pth')
