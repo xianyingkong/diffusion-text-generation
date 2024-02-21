@@ -3,6 +3,9 @@ import functools
 import torch
 import numpy as np
 from torch.optim import AdamW
+import pickle
+import os
+import glob
 
 from utils import dist_util
 from utils.fp16_util import (
@@ -10,6 +13,17 @@ from utils.fp16_util import (
 )
 from utils.nn import update_ema
 from utils.step_sample import LossAwareSampler, UniformSampler
+from datetime import datetime
+
+def clear_dir(directory_path):
+    try:
+        files = glob.glob(os.path.join(directory_path, '*'))
+        for file in files:
+            if os.path.isfile(file):
+                os.remove(file)
+        print("Cleared directory to save new best model.")
+    except OSError:
+        print("Error occurred while deleting files.")
 
 class TrainLoop:
     def __init__(
@@ -45,13 +59,14 @@ class TrainLoop:
         self.weight_decay = weight_decay
         self.learning_steps = epochs
 
-        self.step = 0
+        self.step = 1
 
         self.model_params = list(self.model.parameters())
         self.master_params = self.model_params
 
         self.opt = AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
+        self.min_val_loss = float('inf')
         
     def run_loop(self):
         print("\n\n======== Training starts now ========\n\n")
@@ -64,7 +79,6 @@ class TrainLoop:
             if self.eval_data is not None and self.step % self.eval_interval == 0:
                 batch_eval, cond_eval = next(self.eval_data)
                 self.forward_only(batch_eval, cond_eval)
-                print('eval on validation set')
             self.step += 1
 
     def run_step(self, batch, cond):
@@ -72,6 +86,7 @@ class TrainLoop:
         self.optimize_normal()
 
     def forward_only(self, batch, cond):
+        val_losses = []
         with torch.no_grad():
             zero_grad(self.model_params)
             for i in range(0, batch.shape[0], self.microbatch):
@@ -92,10 +107,22 @@ class TrainLoop:
                 )
 
                 losses = compute_losses()
-
+                loss = (losses["loss"] * weights).mean()
+                val_losses.append(loss.detach().cpu())
+            print(f'Epoch {self.step}/{self.learning_steps} Validation Loss: {np.mean(val_losses)}')
+            
+        dt = datetime.now().strftime("%m%d")
+        if not os.path.isdir(f'models/{dt}'):
+            os.mkdir(f'models/{dt}')
+            
+        if self.min_val_loss > np.mean(val_losses):
+            self.min_val_loss = np.mean(val_losses)
+            clear_dir(f'models/{dt}')
+            print(f'============>Saving current best model with min_val_loss={self.min_val_loss}<=============')
+            pickle.dump(self.model, open(f"models/{dt}/model_best_epoch_{self.step}_min_val_loss_{np.round(self.min_val_loss, 4)}.pkl", 'wb'))
 
     def forward_backward(self, batch, cond):
-        all_loss = []
+        train_losses = []
         zero_grad(self.model_params)
         for i in range(0, batch.shape[0], self.microbatch):
             micro = batch[i : i + self.microbatch].to(dist_util.dev())
@@ -123,8 +150,8 @@ class TrainLoop:
 
             loss = (losses["loss"] * weights).mean()
             loss.backward()
-            all_loss.append(loss.detach().cpu())
-        print(f'Epoch {self.step}/{self.learning_steps} Loss: {np.mean(all_loss)}')
+            train_losses.append(loss.detach().cpu())
+        print(f'Epoch {self.step}/{self.learning_steps} Training Loss: {np.mean(train_losses)}')
 
     def optimize_normal(self):
         self._anneal_lr()

@@ -17,19 +17,15 @@ def sampling(
     batch_size=16, 
     seq_len=128, 
     data_dir='data/',
-    sampling_step=1000, 
-    diffusion_steps=1000,
+    split='test',
     clip_denoised=False, 
     model_kwargs={}, 
     top_p=0, 
+    step_gap=1,
     clamp_step=0):
     
-    output_folder = 'output'
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-        
     # ---- putting the model into eval mode ----
-    model.eval().to(device)
+    model.eval().requires_grad_(False).to(device)
     
     hidden_dim = model.word_embedding.embedding_dim
 
@@ -37,7 +33,7 @@ def sampling(
             num_embeddings=tokenizer.vocab_size, 
             embedding_dim=hidden_dim, 
             _weight=model.word_embedding.weight.clone().cpu()
-        ).eval()
+        ).eval().requires_grad_(False)
     
     # ---- getting test data ----
 
@@ -46,7 +42,7 @@ def sampling(
             seq_len=seq_len,
             deterministic=True,
             data_dir=data_dir,
-            split="test",
+            split=split,
             loaded_vocab=tokenizer,
             model_emb=model_emb.cpu(),  # using the same embedding wight with tranining data
             loop=False
@@ -70,8 +66,6 @@ def sampling(
     word_lst_recover = []
     word_lst_ref = []
     word_lst_source = []
-    
-    print("\n\n======== Generating new sequences ========\n\n")
 
     for cond in iterator:
 
@@ -85,18 +79,7 @@ def sampling(
         x_noised = torch.where(input_ids_mask == 0, x_start, noise)
 
         model_kwargs = {}
-
-        if sampling_step == diffusion_steps:
-            use_ddim = False
-            step_gap = 1
-        else:
-            use_ddim = True
-            step_gap = diffusion_steps//sampling_step
-
-        sample_fn = (
-            diffusion.p_sample_loop if not use_ddim else diffusion.ddim_sample_loop
-        )
-
+        sample_fn = diffusion.p_sample_loop
         sample_shape = (x_start.shape[0], seq_len, hidden_dim)
 
         samples = sample_fn(
@@ -123,30 +106,18 @@ def sampling(
 
         logits = model.get_logits(sample)  # bsz, seqlen, vocab
         cands = torch.topk(logits, k=1, dim=-1)
-        
-        for seq, input_mask in zip(input_ids_x, input_ids_mask_ori):
-            # tokens = tokenizer.decode_token(seq)
-            len_x = seq_len - sum(input_mask).tolist()
-            word_lst_source.append(tokenizer.decode_token(seq[:len_x]))
-            word_lst_ref.append(tokenizer.decode_token(seq[len_x:]))
 
         for seq, input_mask in zip(cands.indices, input_ids_mask_ori):
             len_x = seq_len - sum(input_mask).tolist()
             tokens = tokenizer.decode_token(seq[len_x:])
             word_lst_recover.append(tokens)
-        
-    output = []
-    for i in range(len(word_lst_recover)):
-        output.append({'source': word_lst_source[i], 'target': word_lst_ref[i], 'predicted': word_lst_recover[i]})
-        
-    dt = datetime.now().strftime("%Y_%m_%d-%I_%M_%p")
-    save_path = os.path.join(output_folder, f'output_{dt}.pth')
 
-    with open(save_path, 'w') as output_file:
-        json.dump(output, output_file, indent=2)
-
-    print(f"\nSaved output at: {save_path}")
-            
+        for seq, input_mask in zip(input_ids_x, input_ids_mask_ori):
+            # tokens = tokenizer.decode_token(seq)
+            len_x = seq_len - sum(input_mask).tolist()
+            word_lst_source.append(tokenizer.decode_token(seq[:len_x]))
+            word_lst_ref.append(tokenizer.decode_token(seq[len_x:]))
+    
     return word_lst_source, word_lst_recover, word_lst_ref
 
 
