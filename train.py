@@ -3,6 +3,7 @@ import functools
 import torch
 import numpy as np
 from torch.optim import AdamW
+from transformers import get_cosine_schedule_with_warmup
 import pickle
 import os
 import glob
@@ -41,6 +42,8 @@ class TrainLoop:
         epochs=0,
         eval_data=None,
         eval_interval=-1,
+        warm_up_steps=100,
+        llrd_rate=0.9
     ):
         self.model = model
         self.diffusion = diffusion
@@ -64,9 +67,50 @@ class TrainLoop:
         self.model_params = list(self.model.parameters())
         self.master_params = self.model_params
 
-        self.opt = AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
+#         self.opt = AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
+        self.opt = self.AdamW_LLRD()
+        self.scheduler = get_cosine_schedule_with_warmup(self.opt, num_warmup_steps = warm_up_steps, num_training_steps=epochs)
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
         self.min_val_loss = float('inf')
+        
+    def AdamW_LLRD(self): 
+        print("\n\n======== Using Layer-wise Learning Rate Decay with AdamW ========\n\n")
+        lr = self.lr
+        lr_decay = lr
+        decay_rate = 0.75 # decay by 0.9 from top to bottom layers
+        
+        new_model_params = []
+        
+        # ==== layers arrangement (from most bottom to most top): 
+        # ==== word_embedding -> lm_head -> time_embed -> input_up_proj.0 -> input_up_proj.2 -> 0 to input_transformers.layer.11 -> position_embeddings -> LayerNorm -> output_down_proj.0 -> output_down_proj.2.
+        hidden_layers = [f'input_transformers.layer.{i}.' for i in range(12)]
+        before_hidden = ['word_embedding', 'lm_head', 'time_embed', 'input_up_proj'] 
+        after_hidden = ['position_embeddings', 'LayerNorm', 'output_down_proj']
+        
+        for c in before_hidden:
+            for name, param in self.model.named_parameters():
+                if name.startswith(c):
+                    new_model_params += [{'params': param, 'lr': lr_decay}]
+                    print(f'name: {name}, lr: {lr_decay}') # for checking
+                    
+        lr_decay = lr_decay/decay_rate
+        
+        for c in hidden_layers:
+            for name, param in self.model.named_parameters():
+                if name.startswith(c):
+                    new_model_params += [{'params': param, 'lr': lr_decay}]
+                    print(f'name: {name}, lr: {lr_decay}') # for checking           
+            lr_decay = lr_decay/decay_rate # lr increases as we move from bottom to top layers
+            
+        for c in after_hidden:
+            for name, param in self.model.named_parameters():
+                if name.startswith(c):
+                    new_model_params += [{'params': param, 'lr': lr_decay}]
+                    print(f'name: {name}, lr: {lr_decay}') # for checking
+        
+        assert len(new_model_params) == len(list(self.model.parameters()))
+        
+        return torch.optim.AdamW(new_model_params, weight_decay=self.weight_decay)
         
     def run_loop(self):
         print("\n\n======== Training starts now ========\n\n")
@@ -154,8 +198,9 @@ class TrainLoop:
         print(f'Epoch {self.step}/{self.learning_steps} Training Loss: {np.mean(train_losses)}')
 
     def optimize_normal(self):
-        self._anneal_lr()
+#         self._anneal_lr()
         self.opt.step()
+        self.scheduler.step()
         for rate, params in zip(self.ema_rate, self.ema_params):
             update_ema(params, self.master_params, rate=rate)
 
