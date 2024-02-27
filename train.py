@@ -43,6 +43,7 @@ class TrainLoop:
         eval_data=None,
         eval_interval=-1,
         warm_up_steps=100,
+        use_llrd=False,
         llrd_rate=0.9
     ):
         self.model = model
@@ -61,14 +62,15 @@ class TrainLoop:
         self.schedule_sampler = schedule_sampler or UniformSampler(diffusion)
         self.weight_decay = weight_decay
         self.learning_steps = epochs
+        self.llrd_rate = llrd_rate
 
         self.step = 1
 
         self.model_params = list(self.model.parameters())
         self.master_params = self.model_params
-
-#         self.opt = AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
-        self.opt = self.AdamW_LLRD()
+        
+        self.opt = self.AdamW_LLRD() if use_llrd else AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
+ 
         self.scheduler = get_cosine_schedule_with_warmup(self.opt, num_warmup_steps = warm_up_steps, num_training_steps=epochs)
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
         self.min_val_loss = float('inf')
@@ -77,7 +79,7 @@ class TrainLoop:
         print("\n\n======== Using Layer-wise Learning Rate Decay with AdamW ========\n\n")
         lr = self.lr
         lr_decay = lr
-        decay_rate = 0.75 # decay by 0.9 from top to bottom layers
+        decay_rate = self.llrd_rate # decay from top to bottom layers
         
         new_model_params = []
         
