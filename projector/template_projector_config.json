@@ -3,11 +3,11 @@
     {
       "tensorName": "Shakespeare Word Embedding",
       "tensorShape": [
-        30267,
+        25837,
         128
       ],
-      "tensorPath": "https://raw.githubusercontent.com/xianyingkong/diffusion-text-generation/main/projector/word_embedding.tsv",
-      "metadataPath": "https://raw.githubusercontent.com/xianyingkong/diffusion-text-generation/main/projector/vocab.txt"
+      "tensorPath": "https://raw.githubusercontent.com/xianyingkong/diffusion-text-generation/main/projector/complete_words_embedding.tsv",
+      "metadataPath": "https://raw.githubusercontent.com/xianyingkong/diffusion-text-generation/main/projector/complete_words.txt"
     }
   ]
 }
