@@ -4,7 +4,11 @@ The website presentation for this project can be found [here](https://xianyingko
 This project aims to explore the ability to use diffusion models to generate text. More specifically we implemented the a diffusion model that is comprised of a BERT Transformer and is trained on Shakespeare text. We then measure the clarity and ability of the model to generate text that mimics Shakespeare's.
 
 If you are interested in training a mini-text diffusion model, the `data/mini-shakespeare` folder contains training and test dataset - both of which are a small subset of the full dataset. The full training process is expected to take around 5 minutes for the mini dataset Shakespeare dataset. 
-
+## Files
+We have created files to help facilitate the process from data to trained model:
+- `config/config.yaml` - Configuration used to run the `run.py` folder. This is mainly used to define parameters for the model.
+- `create_tokenizer.py` - Given a filepath to corpus, creates a bert tokenizer that is able to tokenize each word in the corpus file.
+- `run.py` - Runs the train
 ## To train the Text Diffusion model
 - Clone this repository locally
 - [Optional, but recommended] Create a virtual environment: `python -m venv .venv`
