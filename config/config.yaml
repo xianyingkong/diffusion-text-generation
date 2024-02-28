@@ -20,7 +20,7 @@ weight_decay: 0.0
 predict_xstart: True
 rescale_timesteps: True
 emb_scale_factor: 1.0
-data_dir: 'data/shakespeare'
+data_dir: 'data'
 sampling_step: 1000
 clip_denoised: False
 top_p: 0

@@ -1,10 +1,10 @@
-from run_train import create_model_and_diffusion
+from model_arch.run_train import create_model_and_diffusion
 from utils.step_sample import create_named_schedule_sampler
 from utils import dist_util
-from train import TrainLoop
+from model_arch.train import TrainLoop
 from utils.data import load_data_text
-from tokenizer import load_tokenizer, load_model_emb
-from sampling import sampling
+from model_arch.tokenizer import load_tokenizer, load_model_emb
+from model_arch.sampling import sampling
 from transformers import set_seed
 import yaml
 
