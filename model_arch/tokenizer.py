@@ -10,41 +10,18 @@ class myTokenizer():
     ### You can custome your own tokenizer here. ###
     ################################################
     def __init__(self, vocab, config_name):
+        print(vocab)
         if vocab == 'bert':
             tokenizer = AutoTokenizer.from_pretrained(config_name)
             self.tokenizer = tokenizer
             self.sep_token_id = tokenizer.sep_token_id
             self.pad_token_id = tokenizer.pad_token_id
             
-        elif vocab == 'shakespeare_plays':
+        elif vocab == 'shakespeare':
             tokenizer = BertTokenizerFast('shakespeare-tokenizer-bert/plays/vocab.txt')
             self.tokenizer = tokenizer
             self.sep_token_id = tokenizer.sep_token_id
             self.pad_token_id = tokenizer.pad_token_id
-            
-        elif vocab == 'shakespeare_all':
-            plays_tokenizer = BertTokenizerFast('shakespeare-tokenizer-bert/plays/vocab.txt')
-            sonnets_tokenizer = BertTokenizerFast('shakespeare-tokenizer-bert/sonnets/vocab.txt')
-            new_tokens = list(set(sonnets_tokenizer.vocab.keys())-set(plays_tokenizer.vocab.keys()))
-            n_new_tokens = plays_tokenizer.add_tokens(new_tokens)
-            print(f'### Total of {n_new_tokens} new tokens added')
-            self.tokenizer = plays_tokenizer
-            self.sep_token_id = plays_tokenizer.sep_token_id
-            self.pad_token_id = plays_tokenizer.pad_token_id
-
-        elif vocab == 'combined':
-            # look into common english words
-            # modern english to old english encoder decoder
-#             tokenizer = AutoTokenizer.from_pretrained(config_name)
-            tokenizer = BertTokenizerFast('commonsense-tokenizer-bert/vocab.txt')
-            ss_tokenizer = BertTokenizerFast('shakespeare-tokenizer-bert/vocab.txt')
-            new_tokens = list(set(ss_tokenizer.vocab.keys())-set(tokenizer.vocab.keys()))
-            n_new_tokens = tokenizer.add_tokens(new_tokens)
-            print(f'### Total of {n_new_tokens} new tokens added')
-            self.tokenizer = tokenizer
-            self.sep_token_id = tokenizer.sep_token_id
-            self.pad_token_id = tokenizer.pad_token_id
-
         self.vocab_size = len(self.tokenizer)
     
     def encode_token(self, sentences):

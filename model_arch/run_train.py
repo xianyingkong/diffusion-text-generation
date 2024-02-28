@@ -1,5 +1,5 @@
-from transformer import TransformerNetModel
-from gaussian_diffusion import get_named_beta_schedule, SpacedDiffusion
+from .transformer import TransformerNetModel
+from .gaussian_diffusion import get_named_beta_schedule, SpacedDiffusion
 
 def create_model_and_diffusion(
     hidden_t_dim,
