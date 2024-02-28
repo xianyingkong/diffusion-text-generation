@@ -22,7 +22,9 @@ def sampling(
     model_kwargs={}, 
     top_p=0, 
     step_gap=1,
-    clamp_step=0):
+    clamp_step=0,
+    show_intermediate_results=True,
+    inter_steps=[0.25, 0.50, 0.75]):
     
     # ---- putting the model into eval mode ----
     model.eval().requires_grad_(False).to(device)
@@ -97,9 +99,9 @@ def sampling(
             gap=step_gap
         )
 
-        # print(samples[0].shape) # samples for each step
+#         print(len(samples)) # samples for each step
 
-        sample = samples[-1]
+        sample = samples[-1] # sample at last step
 
         # print('decoding for seq2seq', )
         # print(sample.shape)
@@ -117,8 +119,31 @@ def sampling(
             len_x = seq_len - sum(input_mask).tolist()
             word_lst_source.append(tokenizer.decode_token(seq[:len_x]))
             word_lst_ref.append(tokenizer.decode_token(seq[len_x:]))
+            
+        inter_lst_recover = []  
+        
+        if show_intermediate_results:
+            total_steps = len(samples)
+            all_intermediate = []
+            
+            for i in inter_steps:
+                all_intermediate.append(samples[int(total_steps*i)])
+            
+            
+            
+            for inter in all_intermediate:
+                logits = model.get_logits(inter)  # bsz, seqlen, vocab
+                cands = torch.topk(logits, k=1, dim=-1)
+                
+                temp_inter_lst_recover = []
+
+                for seq, input_mask in zip(cands.indices, input_ids_mask_ori):
+                    len_x = seq_len - sum(input_mask).tolist()
+                    tokens = tokenizer.decode_token(seq[len_x:])
+                    temp_inter_lst_recover.append(tokens)
+                inter_lst_recover.append(temp_inter_lst_recover)
     
-    return word_lst_source, word_lst_recover, word_lst_ref
+    return word_lst_source, word_lst_recover, word_lst_ref, inter_lst_recover
 
 
 def get_efficient_knn(model_emb, text_emb):
