@@ -18,5 +18,11 @@ The basic methodology involves preprocessing a dataset comprising Shakespeare's 
 The training process involves implementing a diffusion model architecture based on Gong et al.'s (2023) framework, utilizing a BERT-based transformer alongside a Byte Pair Encoding (BPE) tokenizer. This architecture enables efficient computation and transfer learning, reducing computation costs and training time. Additionally, a customized loss function is employed, incorporating components for denoising, regularization, and embedding learning to optimize the training process.
 
 # Experiments
+The experiments involved in training a text generation model based on Shakespearean plays and sonnets revealed several key findings. Initially attempting to train on a combination of plays and sonnets proved ineffective due to the distinct differences between conversational dialogue and poetic structures. However, the best-performing model emerged when layer-wise learning rate decay and warm-up steps were introduced, strategies not originally present in the DiffuSeq model. Despite attempts at transfer learning, the model struggled to grasp modern text structures before fine-tuning on Shakespearean data.
+
+Cleaning the data was crucial for model performance, with the method of sentence segmentation significantly impacting results. Particularly, limiting conversations to a maximum of two participants and cutting sentences based on the last line break within a sequence length of 128 characters proved beneficial. Moreover, randomizing the data was deemed essential, as training on consecutive plays led to poor performance due to the strong correlation between consecutive data points within the same play.
+
+After numerous experiments, specific hyperparameters were settled upon, including a dropout rate of 0.1, no weight decay, layer-wise learning rate decay set at 0.99, 500 warm-up steps, and 30,000 epochs, with 2000 diffusion steps per training session, taking approximately three hours to complete. Notably, incorporating character names before dialogue improved the model's ability to capture social networks within the text, although it resulted in all generated responses adhering to a "name: response" format, such as "Juliet: life's good."
+
 
 # Results
