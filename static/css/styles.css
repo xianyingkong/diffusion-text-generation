@@ -1,0 +1,17 @@
+.container {
+    margin-top: 50px;
+}
+
+.title {
+    font-family: Goudy Old Style,Garamond,Big Caslon,Times New Roman,serif; 
+    font-weight: 800;
+    margin-bottom: 5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    margin-bottom: 1.5rem;
+}

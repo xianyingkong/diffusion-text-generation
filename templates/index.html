@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Diffusion-Driven Shakespeare</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="title">Diffusion-Driven Shakespeare</h1>
+        
+            <form action="{{url_for('generate_response')}}" method="post" id="input-form">
+                <div class="form-group">
+                    <input type="text" id="enter-box" class="form-control" name="input_text" placeholder="Enter prompt in Shakespearean style" required="required">
+                </div>
+                <button type="submit" class="btn btn-primary">Generate Response</button>
+                <button type="button" class="btn btn-secondary" id="clear-results-btn" style="display: none;">Clear Results</button>
+            </form>
+
+            <div class="loading-spinner text-center" id="loading-spinner" style="display: none;">
+                <div class="spinner-border" role="status"></div>
+                <p class="mt-2">Generating...</p>
+            </div>
+    
+            <div class="response-container" id="response-container" style="display: none;">
+                <div class="row">
+                    <div class="prompt">
+                        <h3>Prompt</h3>
+                        <p id="prompt"></p>
+                    </div>
+                    <div class="generated">
+                        <h3>Response</h3>
+                        <p id="response"></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Script to show/hide loading spinner -->
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function(e) {
+                e.preventDefault();  // Prevent the form from submitting normally
+                
+                // Show loading spinner
+                $('#loading-spinner').show();
+                
+                // Create a FormData object to send the image data
+                var inputText = $('input[name="input_text"]').val();
+                
+                // Send an AJAX request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/generate',
+                    data: {input_text: inputText},
+                    success: function(data) {
+                        // Hide loading spinner
+                        $('#loading-spinner').hide();
+                        
+                        // Update the UI with the original and pixelated images
+                        $('#response-container').show();
+                        $('#prompt').text(inputText);
+                        $('#response').text(data.output_prompt);
+                        $('#clear-results-btn').show();
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            // Clear results on button click
+            $('#clear-results-btn').click(function() {
+                $('#response-container').hide();
+                $('#prompt').attr('');
+                $('#response').attr('');
+                $('#clear-results-btn').hide()
+                $('input[name="input_text"]').val('');
+                $('#input-form')[0].reset();  // Reset form
+            });
+        });
+    </script>
+    </body>
+</html>

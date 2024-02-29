@@ -20,11 +20,12 @@ weight_decay: 0.0
 predict_xstart: True
 rescale_timesteps: True
 emb_scale_factor: 1.0
-data_dir: 'data/mini-shakespeare'
+data_dir: 'data'
 
 # sampling hyperparameters
-sampling_step: 1000
+sampling_step: 10
 clip_denoised: False
 top_p: 0
 clamp_step: 0
 sampling_batch_size: 10
+inter_steps: [0.1, 0.3, 0.4, 0.5, 0.7]
