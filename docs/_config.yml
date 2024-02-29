@@ -23,7 +23,7 @@ github_username: alexander-jensen
 
 # Build settings
 markdown: kramdown
-remote_theme: Hydejack
+remote_theme: pages-themes/Hydejack
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
