@@ -42,7 +42,7 @@ def load_data_text(
         model_emb=model_emb
     )
 
-    if split != 'test':
+    if split != 'test' or split != 'test_custom':
         data_loader = DataLoader(
             dataset,
             batch_size=batch_size,  # 20,
@@ -166,9 +166,9 @@ def get_corpus(data_dir, seq_len, split='train', loaded_vocab=None):
     if split == 'train':
         print('### Loading form the TRAIN set...')
         path = f'{data_dir}/train.jsonl'
-    elif split == 'train-one':
-        print('### Loading form the ONE TRAIN set...')
-        path = f'{data_dir}/train-one.jsonl'
+    elif split == 'test_custom':
+        print('### Loading from the custom TEST set...')
+        path = f'{data_dir}/test_custom.jsonl'
     elif split == 'valid':
         print('### Loading form the VALID set...')
         path = f'{data_dir}/valid.jsonl'
