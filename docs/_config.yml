@@ -23,8 +23,7 @@ github_username: alexander-jensen
 
 # Build settings
 markdown: kramdown
-remote_theme: pages-themes/tactile@v0.2.0
-
+remote_theme: mmistakes/minimal-mistakes
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
