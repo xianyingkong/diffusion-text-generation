@@ -56,15 +56,19 @@ if __name__ == '__main__':
             schedule_sampler=schedule_sampler,
             weight_decay=config['weight_decay'],
             epochs=config['epochs'],
-    #         eval_data=data_valid,
+#             eval_data=data_valid,
             eval_interval=config['eval_interval']
         ).run_loop()
     
-    word_lst_source, word_lst_recover, word_lst_ref = sampling(model, 
+    word_lst_source, word_lst_recover, word_lst_ref, inter_lst_recover = sampling(model, 
                                                                diffusion, 
                                                                tokenizer, 
-                                                               sampling_step=config['sampling_step'], 
                                                                data_dir=config['data_dir'], 
-                                                               batch_size=config['sampling_batch_size'])
+                                                               batch_size=config['sampling_batch_size'], 
+                                                               split='test', 
+                                                               seq_len=config['seq_len'],
+                                                               clip_denoised=config['clip_denoised'],
+                                                               top_p=config['top_p'],
+                                                               clamp_step=config['clamp_step'])
     
     
