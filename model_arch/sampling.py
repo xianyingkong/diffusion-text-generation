@@ -145,6 +145,101 @@ def sampling(
     
     return word_lst_source, word_lst_recover, word_lst_ref, inter_lst_recover
 
+def sampling_progressive(
+    model, 
+    diffusion, 
+    tokenizer, 
+    # sampling_steps,
+    device=device, 
+    batch_size=16, 
+    seq_len=128, 
+    data_dir='data/',
+    split='test',
+    clip_denoised=False, 
+    model_kwargs={}, 
+    top_p=0, 
+    step_gap=1,
+    clamp_step=0,
+    # show_intermediate_results=True,
+    # inter_steps=[0.25, 0.50, 0.75]
+    ):
+    
+    # ---- putting the model into eval mode ----
+    model.eval().requires_grad_(False).to(device)
+    
+    hidden_dim = model.word_embedding.embedding_dim
+
+    model_emb = torch.nn.Embedding(
+            num_embeddings=tokenizer.vocab_size, 
+            embedding_dim=hidden_dim, 
+            _weight=model.word_embedding.weight.clone().cpu()
+        ).eval().requires_grad_(False)
+    
+    # ---- getting test data ----
+
+    data_test = load_data_text(
+            batch_size=batch_size,
+            seq_len=seq_len,
+            deterministic=True,
+            data_dir=data_dir,
+            split=split,
+            loaded_vocab=tokenizer,
+            model_emb=model_emb.cpu(),  # using the same embedding wight with tranining data
+            loop=False
+        )
+
+    all_test_data = []
+
+    _, cond = next(data_test)
+    all_test_data.append(cond)
+
+    model_emb.to(device)
+    
+    # ---- iterating through the test data to generate sequences ----
+    iterator = iter(all_test_data)
+
+    for cond in iterator:
+
+        input_ids_x = cond.pop('input_ids').to(device)
+        x_start = model.get_embeds(input_ids_x)
+        input_ids_mask = cond.pop('input_mask')
+        input_ids_mask_ori = input_ids_mask
+
+        noise = torch.randn_like(x_start)
+        input_ids_mask = torch.broadcast_to(input_ids_mask.unsqueeze(dim=-1), x_start.shape).to(device)
+        x_noised = torch.where(input_ids_mask == 0, x_start, noise)
+
+        model_kwargs = {}
+        sample_fn = diffusion.p_sample_loop_progressive
+        sample_shape = (x_start.shape[0], seq_len, hidden_dim)
+        curr_sample=None
+        count=0
+
+        for sample in sample_fn(
+            model,
+            sample_shape,
+            noise=x_noised,
+            clip_denoised=clip_denoised,
+            denoised_fn=partial(denoised_fn_round, model_emb),
+            model_kwargs=model_kwargs,
+            top_p=top_p,
+            clamp_step=clamp_step,
+            clamp_first=True,
+            mask=input_ids_mask,
+            x_start=x_start
+        ):
+            count += 1
+
+            curr_sample = sample['sample']
+            logits = model.get_logits(curr_sample)  # bsz, seqlen, vocab
+            cands = torch.topk(logits, k=1, dim=-1)
+            
+            for seq, input_mask in zip(cands.indices, input_ids_mask_ori):
+                len_x = seq_len - sum(input_mask).tolist()
+                tokens = tokenizer.decode_token(seq[len_x:])
+                    
+            yield count, tokens
+
 
 def get_efficient_knn(model_emb, text_emb):
     emb_norm = (model_emb**2).sum(-1).view(-1, 1) # vocab

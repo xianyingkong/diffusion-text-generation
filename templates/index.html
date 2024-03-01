@@ -22,7 +22,14 @@
 
             <div class="loading-spinner text-center" id="loading-spinner" style="display: none;">
                 <div class="spinner-border" role="status"></div>
-                <p class="mt-2">Generating...</p>
+                <p class="mt-2">Parsing input...</p>
+            </div>
+
+            <!-- Bootstrap Progress Bar -->
+            <div class="progress mb-4" id="progress" style="display: none; height: 30px;">
+                <div id="progress-bar" class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    0%
+                </div>
             </div>
     
             <div class="response-container" id="response-container" style="display: none;">
@@ -38,6 +45,13 @@
                 </div>
             </div>
 
+            <div class="inter-response-container" id="inter-response-container" style="display: none;">
+                <div class="row">
+                    <h3>Intermediate Outputs</h3>
+                    <div id="intermediate-output"></div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Bootstrap JS -->
@@ -47,14 +61,50 @@
     <!-- Script to show/hide loading spinner -->
     <script>
         $(document).ready(function() {
+
+            function updateUIPostGeneration(data) {
+                $('#response').text(data.final_response);
+                $('#response-container').show();
+                $('#clear-results-btn').show();
+                $('#loading-spinner').hide();
+                
+                $('#progress').hide();
+                $('#progress-bar').css('width', '0%').attr('aria-valuenow', '0').text('0%');
+            }
+
+            function handleProgress(data) {
+                $('#progress-bar').css('width', data.progress + '%').attr('aria-valuenow', data.progress).text(data.progress + '%');
+            }
+
+            function showIntermediateResponse(data) {
+                var progressBarHTML = '<div class="progress">' +
+                            '<div class="progress-bar" role="progressbar" style="width: ' + data.progress + '%" aria-valuenow="' + data.progress + '" aria-valuemin="0" aria-valuemax="100">' + data.progress + '%</div>' +
+                          '</div>';
+                var newParagraph = '<p>' + data.inter_response + '</p>';
+                $('#intermediate-output').prepend(progressBarHTML + newParagraph);
+            }
+
+            function clearOutputs() {
+                $('#response-container').hide();
+                $('#prompt').attr('');
+                $('#response').attr('');
+                $('#clear-results-btn').hide();
+                $('#intermediate-output').empty();
+                $('#inter-response-container').hide();
+            }
+
+            function clearInputs() {
+                $('input[name="input_text"]').val('');
+                $('#input-form')[0].reset();  // Reset form
+            }
+
+            
             $('form').submit(function(e) {
-                e.preventDefault();  // Prevent the form from submitting normally
-                
-                // Show loading spinner
-                $('#loading-spinner').show();
-                
-                // Create a FormData object to send the image data
+                e.preventDefault();  // Prevent the form from submitting normally                
+                clearOutputs();
                 var inputText = $('input[name="input_text"]').val();
+                $('#prompt').text(inputText);
+                $('#loading-spinner').show();
                 
                 // Send an AJAX request to the server
                 $.ajax({
@@ -62,30 +112,42 @@
                     url: '/generate',
                     data: {input_text: inputText},
                     success: function(data) {
-                        // Hide loading spinner
-                        $('#loading-spinner').hide();
-                        
-                        // Update the UI with the original and pixelated images
-                        $('#response-container').show();
-                        $('#prompt').text(inputText);
-                        $('#response').text(data.output_prompt);
-                        $('#clear-results-btn').show();
+                        if (data.parse_status === true) {
+                            $('#loading-spinner p').text('Text successfully encoded. Generating response...');
+                            $('#progress').show();
+                        }
                     },
                     error: function(xhr, status, error) {
                         // Handle errors
                         console.error(xhr.responseText);
                     }
                 });
+
+                var eventSource = new EventSource("{{url_for('generate_response')}}");
+                eventSource.onmessage = function(event) {
+                    console.log("Sending intermediate output...")
+                    var eventData = JSON.parse(event.data);
+                    console.log(eventData)
+
+                    if (eventData.progress) {
+                        handleProgress(eventData);
+
+                        if (eventData.inter_response) {
+                            $('#inter-response-container').show();
+                            showIntermediateResponse(eventData);
+                        }
+                    } else {
+                        updateUIPostGeneration(eventData)
+                        eventSource.close()
+                    }
+                    
+                };
             });
 
             // Clear results on button click
             $('#clear-results-btn').click(function() {
-                $('#response-container').hide();
-                $('#prompt').attr('');
-                $('#response').attr('');
-                $('#clear-results-btn').hide()
-                $('input[name="input_text"]').val('');
-                $('#input-form')[0].reset();  // Reset form
+                clearOutputs();
+                clearInputs();
             });
         });
     </script>
