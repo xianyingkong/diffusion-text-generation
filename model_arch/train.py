@@ -63,8 +63,10 @@ class TrainLoop:
         self.weight_decay = weight_decay
         self.learning_steps = epochs
         self.llrd_rate = llrd_rate
+        self.val_losses = []
+        self.train_losses = []
 
-        self.step = 1
+        self.step = 0
 
         self.model_params = list(self.model.parameters())
         self.master_params = self.model_params
@@ -126,6 +128,12 @@ class TrainLoop:
                 batch_eval, cond_eval = next(self.eval_data)
                 self.forward_only(batch_eval, cond_eval)
             self.step += 1
+            
+        if self.eval_data is not None and self.step == self.learning_steps:
+            batch_eval, cond_eval = next(self.eval_data)
+            self.forward_only(batch_eval, cond_eval)
+        
+        return self.train_losses, self.val_losses
 
     def run_step(self, batch, cond):
         self.forward_backward(batch, cond)
@@ -156,6 +164,7 @@ class TrainLoop:
                 loss = (losses["loss"] * weights).mean()
                 val_losses.append(loss.detach().cpu())
             print(f'Epoch {self.step}/{self.learning_steps} Validation Loss: {np.mean(val_losses)}')
+        self.val_losses.append(np.mean(val_losses))
             
         dt = datetime.now().strftime("%m%d")
         if not os.path.isdir(f'models/{dt}'):
@@ -198,6 +207,7 @@ class TrainLoop:
             loss.backward()
             train_losses.append(loss.detach().cpu())
         print(f'Epoch {self.step}/{self.learning_steps} Training Loss: {np.mean(train_losses)}')
+        self.train_losses.append(np.mean(train_losses))
 
     def optimize_normal(self):
 #         self._anneal_lr()
