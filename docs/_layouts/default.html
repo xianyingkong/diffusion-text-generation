@@ -3,26 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | {{ site.title }}</title>
+    <title>{{ page.title }}</title>
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
-    <header>
-        <h1>{{ site.title }}</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main>
-        {{ content }}
-    </main>
+<header>
+    <h1>My Conference Website</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/intro">Intro</a></li>
+            <li><a href="/data">Data</a></li>
+            <li><a href="/methodology">Basic Methodology</a></li>
+            <li><a href="/experiments">Experiments</a></li>
+            <li><a href="/results">Results</a></li>
+            <li><a href="/team">Team</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <footer>
-        &copy; {{ site.title }} - {{ site.time | date: "%Y" }}
-    </footer>
+<main>
+    {{ content }}
+</main>
+
+<footer>
+    &copy; {{ site.title }} - {{ site.time | date: "%Y" }}
+</footer>
+
 </body>
 </html>
