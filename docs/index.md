@@ -38,7 +38,7 @@ Cleaning the data was crucial for model performance, with the method of sentence
 
 After numerous experiments, specific hyperparameters were settled upon, including a dropout rate of 0.1, no weight decay, layer-wise learning rate decay set at 0.99, 500 warm-up steps, and 30,000 epochs, with 2000 diffusion steps per training session, taking approximately three hours to complete. Notably, incorporating character names before dialogue improved the model's ability to capture social networks within the text, although it resulted in all generated responses adhering to a "name: response" format, such as "Juliet: life's good."
 
-![Experiments Image](/assets/images/experiments.jpg)
+![Experiments Image](https://www.google.com/url?sa=i&url=https%3A%2F%2Fbetterprogramming.pub%2Fdiffusion-models-ddpms-ddims-and-classifier-free-guidance-e07b297b2869&psig=AOvVaw0xxUENtIKjIYBEoz9K9mIy&ust=1709622529640000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKDhrLGG2oQDFQAAAAAdAAAAABAD)
 
 ## Results {#results}
 
