@@ -18,7 +18,7 @@ Our working model can be found here (currently in development). Our github repos
 
 This is the data section of our conference.
 
-![Data Image]([/assets/images/data.jpg](https://labs.jstor.org/content/images/2020/03/14_10_17_Shakespeare-The_Data_02.jpg))
+![Data Image](https://labs.jstor.org/content/images/2020/03/14_10_17_Shakespeare-The_Data_02.jpg)
 
 For our data, we used a Shakespeare dataset based off of all of Shakespeare's plays. For every line, we create the source sequence containing the line, followed by the target sequence being the next line that follows this line. Upon further development, we cleaned the data to remove errors in encoding (incorrectly formatted approstrophes, colons, etc), as well as removing lines that were in a different language, such as certain sections in Henry V. 
 
@@ -32,7 +32,7 @@ The training process involves implementing a diffusion model architecture based 
 
 ## Experiments {#experiments}
 
-![Experiments Image](https://dotnettrickscloud.blob.core.windows.net/img/machinelearning/3720230601010440.webp)
+![Experiments Image](https://www.researchgate.net/publication/333005517/figure/fig3/AS:761360505909251@1558533898160/Model-selection-process.png)
 
 The experiments involved in training a text generation model based on Shakespearean plays and sonnets revealed several key findings. Initially attempting to train on a combination of plays and sonnets proved ineffective due to the distinct differences between conversational dialogue and poetic structures. However, the best-performing model emerged when layer-wise learning rate decay and warm-up steps were introduced, strategies not originally present in the DiffuSeq model. Despite attempts at transfer learning, the model struggled to grasp modern text structures before fine-tuning on Shakespearean data.
 
