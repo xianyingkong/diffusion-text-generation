@@ -32,6 +32,7 @@ main {
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Prevent images from extending beyond the page boundaries */
 }
 
 footer {
@@ -47,8 +48,15 @@ footer {
 /* Links */
 a {
     color: #007bff; /* Blue links */
+    text-decoration: none; /* Remove underlines */
 }
 
 a:hover {
     color: #0056b3; /* Darker blue on hover */
+}
+
+/* Images */
+img {
+    max-width: 100%; /* Ensure images resize to fit within the page */
+    height: auto; /* Maintain aspect ratio */
 }
