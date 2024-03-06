@@ -3,11 +3,8 @@ layout: default
 title: Home
 ---
 
-# Welcome to Our Website
 
-This website provides information about our Project.
-
-## Intro {#intro}
+## Background {#background}
 ![Intro Image](https://miro.medium.com/v2/resize:fit:720/format:webp/0*XihTiZxM9l745qox.gif)
 
 Diffusion-Driven Shakespeare is a project that aims to further explore the capabilities of diffusion networks in a text-based domain. Diffusion networks such as DALLE, Midjourney, and most recently SORA, have been used to create high quality samples in image and video domains, where there is an inherent locality to the data structure, such as related pixels being next to each other. However, text does not have an inherent locality similar to images, and must consider more factors, such as context (our input sequence). In this project, we use the DiffuSeq model architecture trained on Shakespeare plays to assess whether diffusion models are capable of sampling sentences that have similar style to Shakespeare analogous to high quality images sampled in other models. For our results, we found that the Shakespeare model does have comprehension of the context, although the length of the generated texts are fairly short.
@@ -45,10 +42,10 @@ After numerous experiments, specific hyperparameters were settled upon, includin
 
 This is the results section of our conference.
 
-![Results Image](/assets/images/results.jpg)
+<!-- ![Results Image](/assets/images/results.jpg) -->
 
 ## Team {#team}
 
 This is the team section of our conference.
 
-![Team Image](/assets/images/team.jpg)
+<!-- ![Team Image](/assets/images/team.jpg) -->

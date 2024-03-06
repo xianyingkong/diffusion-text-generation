@@ -2,20 +2,32 @@
 html, body, h1, h2, h3, h4, h5, h6, p, ul, li {
     margin: 0;
     padding: 0;
+    font-family: "Roboto", sans-serif;
+    color: #000000;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
 }
 
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f5f5f5; /* Light gray background */
+    /* background-color: #e9f4ff; */
+    background-color: #fff;
     color: #333;
 }
 
 header {
-    background-color: #0056b3; /* Darker blue header */
-    color: #fff;
+    background-color: #fff; 
+    color: #000000;
     padding: 20px;
     overflow: hidden; /* Clear floats */
+    text-align: center;
+}
+
+.font-weight-bold {
+    font-weight: 700 !important;
 }
 
 nav ul {
@@ -28,15 +40,15 @@ nav ul li {
 }
 
 main {
-    max-width: 900px; /* Increase maximum width */
+    max-width: 75%;
     margin: 20px auto;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* background-color: #fff; */
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
 }
 
 footer {
-    background-color: #0056b3; /* Darker blue footer */
+    background-color: #0056b3;
     color: #fff;
     padding: 10px 20px;
     position: fixed;
@@ -47,7 +59,7 @@ footer {
 
 /* Links */
 a {
-    color: #fff; /* White links */
+    color: #000000; /* White links */
     text-decoration: none; /* Remove underlines */
 }
 
