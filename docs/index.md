@@ -1,13 +1,23 @@
 ---
 layout: default
-title: Home
+title: Diffusion-Driven Shakespeare
+page_image: shakespeare-picture.jpg
 ---
 
-
 ## Background {#background}
-![Intro Image](https://miro.medium.com/v2/resize:fit:720/format:webp/0*XihTiZxM9l745qox.gif)
+{:refdef: style="text-align: center;"}
+![diffusion_img](/assets/Fixed_Forward_Diffusion_Process.png)
+{: refdef}
 
-Diffusion-Driven Shakespeare is a project that aims to further explore the capabilities of diffusion networks in a text-based domain. Diffusion networks such as DALLE, Midjourney, and most recently SORA, have been used to create high quality samples in image and video domains, where there is an inherent locality to the data structure, such as related pixels being next to each other. However, text does not have an inherent locality similar to images, and must consider more factors, such as context (our input sequence). In this project, we use the DiffuSeq model architecture trained on Shakespeare plays to assess whether diffusion models are capable of sampling sentences that have similar style to Shakespeare analogous to high quality images sampled in other models. For our results, we found that the Shakespeare model does have comprehension of the context, although the length of the generated texts are fairly short.
+Diffusion models are a type of generative model that simulates the natural data generation process. They are characterized by a forward process that adds random noise to the input sample and a reverse process that iteratively denoises noisy samples to generate high-quality samples that closely approximate its training data distribution.
+
+{:refdef: style="text-align: center;"}
+![diffusion_gif](/assets/Diffusion_cropped.gif)
+{: refdef}
+
+Diffusion networks such as DALLE, Midjourney, and most recently SORA, have been used to create high quality samples in the domain of images, videos and audios, where there is an inherent locality and continuity to the data structure. However, text does not have an inherent locality similar to images and is inherently discrete in nature. 
+
+
 
 Our working model can be found here (currently in development). Our github repository can be found [here](https://github.com/xianyingkong/diffusion-text-generation), and our report can be found here (not published yet).
 
@@ -15,7 +25,7 @@ Our working model can be found here (currently in development). Our github repos
 
 This is the data section of our conference.
 
-![Data Image](https://labs.jstor.org/content/images/2020/03/14_10_17_Shakespeare-The_Data_02.jpg)
+
 
 For our data, we used a Shakespeare dataset based off of all of Shakespeare's plays. For every line, we create the source sequence containing the line, followed by the target sequence being the next line that follows this line. Upon further development, we cleaned the data to remove errors in encoding (incorrectly formatted approstrophes, colons, etc), as well as removing lines that were in a different language, such as certain sections in Henry V. 
 

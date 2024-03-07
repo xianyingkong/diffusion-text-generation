@@ -6,16 +6,48 @@ html, body, h1, h2, h3, h4, h5, h6, p, ul, li {
     color: #000000;
 }
 
+.intro-content {
+    text-align: left;
+}
+
+.intro-image {
+    text-align: center; /* Center the image within the container */
+    float:inline-start; /* Float the image to the right */
+}
+
+@media only screen and (min-width: 600px) {
+    .intro {
+        display: flex;
+        align-items: center;
+    }
+
+    .intro-content {
+        flex: 1; /* Expand to fill available space */
+        text-align: justify;
+    }
+    
+    .intro-image {
+        flex: 1;
+        text-align: center; /* Center the image */
+        float: none; /* Remove float on wider screens */
+    }
+}
+
 h1, h2, h3, h4, h5, h6 {
+    margin-top: 1.5rem;
     font-weight: 300;
 }
 
 body {
-    font-family: Arial, sans-serif;
     line-height: 1.6;
     /* background-color: #e9f4ff; */
+    /* text-align: justify; */
     background-color: #fff;
-    color: #333;
+    color: #000000;
+}
+
+main h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 1.5rem;
 }
 
 header {
@@ -71,5 +103,5 @@ a:hover {
 img {
     max-width: 100%; /* Ensure images resize to fit within the page */
     height: auto; /* Maintain aspect ratio */
+    display: inline-block;
 }
-

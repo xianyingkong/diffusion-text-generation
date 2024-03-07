@@ -23,8 +23,32 @@
 </header>
 
 <main>
-    {{ content }}
+    <div class="intro">
+        {% if page.page_image %}
+        <div class="intro-image">
+            <img src="{{ '/assets/' | append: page.page_image | relative_url }}"/>
+        </div>
+        {% endif %}
+        <div class="intro-content">
+            Diffusion-Driven Shakespeare is a diffusion-based conditional generative model
+            that is trained to generate text in the style of Shakespeare's.
+            This project is inspired by the recent breakthrough in continuous diffusion for natural language.
+            Our model follows the architecture of DiffuSeq (Gong et al. 2023), the first diffusion-based Seq2Seq model, 
+            with modifications on training and fine-tuning techniques. The goal of our project is to demonstrate
+            the ability of diffusion models in learning complex text representations and sentence structures.
+        </div>
+        
+
+    </div>
 </main>
+<main>
+    <div>
+        {{ content }}
+    </div>
+</main>
+    
+    
+
 
 <footer>
     &copy; {{ site.title }} - {{ site.time | date: "%Y" }}
