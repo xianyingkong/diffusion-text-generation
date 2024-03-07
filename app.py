@@ -78,9 +78,9 @@ def get_model():
                     predict_xstart=app.predict_xstart,
                 )
 
-        with open(best_model_fp, 'rb') as handle:
-            # best_model = pickle.load(handle)
-            app.model = CPU_Unpickler(handle).load()
+        with open(app.best_model_fp, 'rb') as handle:
+            app.model = pickle.load(handle)
+#             app.model = CPU_Unpickler(handle).load()
 
         app.tokenizer = load_tokenizer(app.tokenizer_name, app.transformer_name)
     
@@ -101,6 +101,7 @@ def initialize_env():
         app.inter_steps=list(config['inter_steps'])
         app.sampling_batch_size=config['sampling_batch_size']
         app.seq_len=config['seq_len']
+        app.best_model_fp=config['best_model_fp']
         app.initialized_env=True
     
 def write_to_custom_jsonl(text, folder_dir, filename='test_custom'):
