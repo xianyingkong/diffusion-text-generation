@@ -430,6 +430,7 @@ class GaussianDiffusion:
             sample_x = noise
         else:
             sample_x = torch.randn(*shape, device=self.device)
+        
         indices = list(range(self.num_timesteps))[::-1]
 
         if progress:

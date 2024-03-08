@@ -35,6 +35,15 @@ def generate_response():
         diffusion, model, tokenizer = get_model()
 
         return Response(generate_samples_progressive(model, diffusion, tokenizer), mimetype='text/event-stream')
+    
+@app.route("/set_seed", methods=['POST'])
+def set_new_seed():
+    print(request.form)
+    input_seed = int(request.form['input_seed'])
+    initialize_env(input_seed)
+    response = {'seed_status': True}
+    return jsonify(response)
+    
 
 def generate_samples_progressive(model, diffusion, tokenizer):
     inter_steps_idx = np.array(app.inter_steps)*app.sampling_step
@@ -46,9 +55,12 @@ def generate_samples_progressive(model, diffusion, tokenizer):
                                             data_dir=app.data_dir, 
                                             batch_size=app.sampling_batch_size, 
                                             split='test_custom', 
-                                            seq_len=app.seq_len):
+                                            seq_len=app.sampling_seq_len):
         # check for intermediate steps
-        print(count, sample, "\n")
+#         print(count, "\n")
+        if count == -1:
+            yield "data:" + json.dumps({"progress": count}) + "\n\n"
+            
         inter_response = None
         if len(inter_steps_idx) > 0:
             if count == inter_steps_idx[0]:
@@ -59,11 +71,12 @@ def generate_samples_progressive(model, diffusion, tokenizer):
         if count == app.sampling_step:
             final_output = clean_output(sample)
 
-        progress_percentage = int(count/app.sampling_step*100)
+#         progress_percentage = int(count/app.sampling_step*100)
+#         print(inter_response)
         if inter_response:
-            yield "data:" + json.dumps({"progress": progress_percentage, "inter_response": inter_response}) + "\n\n"
+            yield "data:" + json.dumps({"progress": count, "inter_response": inter_response, "max_progress": app.sampling_step}) + "\n\n"
         else:
-            yield "data:" + json.dumps({"progress": progress_percentage}) + "\n\n"
+            yield "data:" + json.dumps({"progress": count, "max_progress": app.sampling_step}) + "\n\n"
 
     yield "data:" + json.dumps({"final_response": final_output}) + "\n\n"
 
@@ -86,11 +99,12 @@ def get_model():
     
     return app.diffusion, app.model, app.tokenizer
 
-def initialize_env():
+def initialize_env(seed=None):
     if not app.initialized_env:
         print("### Setting up environment...")
         config = yaml.load(open(config_fp, 'r'), Loader=yaml.SafeLoader)
-        set_seed(config['seed'])
+        seed = seed if seed else config['seed']
+        set_seed(seed)
         app.noise_schedule=config['noise_schedule']
         app.predict_xstart=config['predict_xstart']
         app.rescale_timesteps=config['rescale_timesteps']
@@ -100,9 +114,19 @@ def initialize_env():
         app.sampling_step=config['sampling_step']
         app.inter_steps=list(config['inter_steps'])
         app.sampling_batch_size=config['sampling_batch_size']
-        app.seq_len=config['seq_len']
+        app.sampling_seq_len=config['sampling_seq_len']
         app.best_model_fp=config['best_model_fp']
         app.initialized_env=True
+    
+    # only reinitializing environment
+    if app.initialized_env:
+        seed = seed if seed else config['seed']
+        set_seed(seed)
+        app.diffusion = SpacedDiffusion(
+                    betas=get_named_beta_schedule(app.noise_schedule, app.sampling_step),
+                    rescale_timesteps=app.rescale_timesteps,
+                    predict_xstart=app.predict_xstart,
+                )
     
 def write_to_custom_jsonl(text, folder_dir, filename='test_custom'):
     data = {'src': text, 'trg': ""}
@@ -134,4 +158,4 @@ class CPU_Unpickler(pickle.Unpickler):
 
 if __name__ == "__main__":
     initialize_env()
-    app.run()
+    app.run(host='0.0.0.0', debug=True)

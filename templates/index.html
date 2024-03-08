@@ -11,9 +11,27 @@
     <body>
         <div class="container">
             <h1 class="title">Diffusion-Driven Shakespeare</h1>
+            
+            <form action="{{url_for('set_new_seed')}}" method="post" id="seed-form">
+                <div class="form-inline row align-items-center">
+                    <label class="mb-2" for="inlineFormInput"> Set a custom seed</label>
+                    <div class="col-sm-3">
+                        
+                        <input type="text" class="form-control mb-3" id="inlineFormInput" name="input_seed" value=102 required=required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary mb-3">Set Seed</button>
+                    </div>
+                    <div class="col-auto" id="seed_set_success" style="display: none;">
+                        <p><b>Successfully set seed!</b></p>
+                    </div>
+                </div>
+                
+            </form>
         
             <form action="{{url_for('generate_response')}}" method="post" id="input-form">
                 <div class="form-group">
+                    <label class="mb-2" for="enter-box">Enter prompt</label>
                     <input type="text" id="enter-box" class="form-control" name="input_text" placeholder="Enter prompt in Shakespearean style" required="required">
                 </div>
                 <button type="submit" class="btn btn-primary">Generate Response</button>
@@ -69,16 +87,22 @@
                 $('#loading-spinner').hide();
                 
                 $('#progress').hide();
-                $('#progress-bar').css('width', '0%').attr('aria-valuenow', '0').text('0%');
+                $('#progress-bar').css('width', '0%').attr('aria-valuenow', '0').attr('aria-valuemax', '100').text('0');
             }
 
             function handleProgress(data) {
-                $('#progress-bar').css('width', data.progress + '%').attr('aria-valuenow', data.progress).text(data.progress + '%');
+                if (data.progress === -1) {
+                    $('#loading-spinner p').text('Text successfully encoded. Generating response...');
+                } else {
+                    var progress_percent = parseInt(data.progress/data.max_progress*100)
+                    $('#progress-bar').css('width', progress_percent + '%').attr('aria-valuenow', progress_percent).text(data.progress);
+                }
+                
             }
 
             function showIntermediateResponse(data) {
                 var progressBarHTML = '<div class="progress">' +
-                            '<div class="progress-bar" role="progressbar" style="width: ' + data.progress + '%" aria-valuenow="' + data.progress + '" aria-valuemin="0" aria-valuemax="100">' + data.progress + '%</div>' +
+                            '<div class="progress-bar" role="progressbar" style="width: ' + parseInt(data.progress/data.max_progress*100) + '%" aria-valuenow="' + data.progress + '" aria-valuemin="0" aria-valuemax="'+ data.max_progress+'">' + data.progress + '</div>' +
                           '</div>';
                 var newParagraph = '<p>' + data.inter_response + '</p>';
                 $('#intermediate-output').prepend(progressBarHTML + newParagraph);
@@ -91,15 +115,37 @@
                 $('#clear-results-btn').hide();
                 $('#intermediate-output').empty();
                 $('#inter-response-container').hide();
+                $('#seed_set_success').hide();
             }
 
             function clearInputs() {
                 $('input[name="input_text"]').val('');
                 $('#input-form')[0].reset();  // Reset form
             }
+            
+            $('#seed-form').submit(function(e) {
+                e.preventDefault();  // Prevent the form from submitting normally                
+                var inputSeed = $('input[name="input_seed"]').val();
+                
+                // Send an AJAX request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/set_seed',
+                    data: {input_seed: inputSeed},
+                    success: function(data) {
+                        if (data.seed_status === true) {
+                            $('#seed_set_success').show();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
 
             
-            $('form').submit(function(e) {
+            $('#input-form').submit(function(e) {
                 e.preventDefault();  // Prevent the form from submitting normally                
                 clearOutputs();
                 var inputText = $('input[name="input_text"]').val();
@@ -113,7 +159,7 @@
                     data: {input_text: inputText},
                     success: function(data) {
                         if (data.parse_status === true) {
-                            $('#loading-spinner p').text('Text successfully encoded. Generating response...');
+                            $('#loading-spinner p').text('Text saved. Encoding input text...');
                             $('#progress').show();
                         }
                     },
@@ -130,6 +176,7 @@
                     console.log(eventData)
 
                     if (eventData.progress) {
+                        console.log(eventData.progress);
                         handleProgress(eventData);
 
                         if (eventData.inter_response) {

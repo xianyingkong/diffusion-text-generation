@@ -9,7 +9,8 @@
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .btn {
@@ -47,4 +48,8 @@
 
 .inter-response-container p {
     margin-bottom: 2rem;
+}
+
+#seed_set_success {
+    color: darkgreen;
 }

@@ -152,7 +152,7 @@ def sampling_progressive(
     # sampling_steps,
     device=device, 
     batch_size=16, 
-    seq_len=128, 
+    seq_len=64, 
     data_dir='data/',
     split='test',
     clip_denoised=False, 
@@ -197,6 +197,8 @@ def sampling_progressive(
     
     # ---- iterating through the test data to generate sequences ----
     iterator = iter(all_test_data)
+    
+    yield -1, None
 
     for cond in iterator:
 
@@ -230,6 +232,7 @@ def sampling_progressive(
         ):
             count += 1
 
+#             print(count)
             curr_sample = sample['sample']
             logits = model.get_logits(curr_sample)  # bsz, seqlen, vocab
             cands = torch.topk(logits, k=1, dim=-1)
@@ -239,7 +242,7 @@ def sampling_progressive(
                 tokens = tokenizer.decode_token(seq[len_x:])
                     
             yield count, tokens
-
+    print("================== Finished sampling")
 
 def get_efficient_knn(model_emb, text_emb):
     emb_norm = (model_emb**2).sum(-1).view(-1, 1) # vocab
