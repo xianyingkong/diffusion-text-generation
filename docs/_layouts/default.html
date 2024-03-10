@@ -13,11 +13,13 @@
     <nav>
         <ul>
             <li><a href="#background">Background</a></li>
-            <li><a href="#data">Data</a></li>
             <li><a href="#methodology">Methodology</a></li>
+            <li><a href="#data">Data</a></li>
             <li><a href="#experiments">Experiments</a></li>
             <li><a href="#results">Results</a></li>
             <li><a href="#team">Team</a></li>
+            <li><a href="#findings">Additional Findings</a></li>
+            <li><a href="https://github.com/xianyingkong/diffusion-text-generation" target="_blank">GitHub</a></li>
         </ul>
     </nav>
 </header>
@@ -26,7 +28,7 @@
     <div class="intro">
         {% if page.page_image %}
         <div class="intro-image">
-            <img src="{{ '/assets/' | append: page.page_image | relative_url }}"/>
+            <img src="{{ '/assets/' | append: page.page_image | relative_url }}" id="large-img"/>
         </div>
         {% endif %}
         <div class="intro-content">

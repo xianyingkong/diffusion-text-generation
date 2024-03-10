@@ -6,6 +6,13 @@ html, body, h1, h2, h3, h4, h5, h6, p, ul, li {
     color: #000000;
 }
 
+ul, li {
+    margin: 0 20px;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+    color: #000000;
+}
+
 .intro-content {
     text-align: left;
 }
@@ -91,7 +98,7 @@ footer {
 
 /* Links */
 a {
-    color: #000000; /* White links */
+    color: hwb(232 7% 50%); /* White links */
     text-decoration: none; /* Remove underlines */
 }
 
@@ -101,7 +108,27 @@ a:hover {
 
 /* Images */
 img {
-    max-width: 100%; /* Ensure images resize to fit within the page */
-    height: auto; /* Maintain aspect ratio */
     display: inline-block;
 }
+
+#medium-img {
+    height: auto;
+    max-width: 90%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#small-img {
+    height: auto;
+    max-width: 60%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#large-img {
+    height: auto;
+    max-width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
