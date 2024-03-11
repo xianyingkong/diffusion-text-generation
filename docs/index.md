@@ -82,14 +82,49 @@ Some notable experiments that we have conducted include:
 
 <br>
 
+**The best-trained model emerged when LLRD and warm-up steps were introduced, strategies not originally present in the DiffuSeq model.**
+
+<br>
+
 Our final best-trained model has 1000 diffusion steps, 128 hidden dimension, 0.1 dropout rate, 0.0 weight decay, batch size of 30 and layer-wise learning rate decay of 0.9 with a starting learning rate of 0.0001 at the bottom-most layer (closest to input). The model is trained on 1 GPU with 30,000 epochs and 500 warm up steps, taking roughly 7-8 hours. The effect of reinitializing the last layer of the encoder transformer is negligible.
 
 <br>
 
 ## **Results** {#results}
-Notably, incorporating character names before dialogue improved the model's ability to capture social networks within the text, although it resulted in all generated responses adhering to a "name: response" format, such as "Juliet: life's good."
+Our models are able to sample new continuations of Shakespeare lines that match a similar sentiment to the Shakeaspearean line input into the model. Our models **perform better when trained on long input sequences**. Our model samples are also of high diversity, with many different possible lines that follow the given line. These responses are not entirely coherent all the time however, as some generations may not follow the given line well, and thus some human verification may be required.
 
-<!-- ![Results Image](/assets/images/results.jpg) -->
+<br>
+
+Table 1 shows some example responses that the diffusion model generated at each of the
+following diffusion steps and the prompt that was used.
+
+
+<br>
+
+{:refdef: style="text-align: center;"}
+![diffusion_img](/assets/model_comparison.JPG){: #very-small-img}
+{: refdef}
+
+Figure below visually depicts the embedding space of positive and negative words learned by our model and shows how the model can **clearly cluster similar words belonging to comedies or tragedies**.
+
+<br>
+
+{:refdef: style="text-align: center;"}
+![diffusion_img](/assets/tragedies_comedies.png){: #very-small-img}
+{: refdef}
+<p style="font-size: large; text-align: center;"><strong style="font-size: smaller;">UMAP projection of word embeddings by positive and negative sentiments</strong></p>
+
+<br>
+
+When the model is trained with character names at the start of each conversation in the source-target pairs, we find the our model is **able to capture some level of social network amongst the characters**. Figure visually depicts the embedding space of character names in selected plays and shows how our model can associate characters of the same play.
+
+<br>
+
+{:refdef: style="text-align: center;"}
+![diffusion_img](/assets/social_net.png){: #very-small-img}
+{: refdef}
+<p style="font-size: large; text-align: center;"><strong style="font-size: smaller;">UMAP projection of character names in selected famous plays</strong></p>
+
 
 <br>
 
@@ -104,10 +139,6 @@ Meet the team behind!
 ## **Interesting Findings** {#findings}
 
 The experiments involved in training a text generation model based on Shakespearean plays and sonnets revealed several key findings. Initially attempting to train on a combination of plays and sonnets proved ineffective due to the distinct differences between conversational dialogue and poetic structures. Furthermore, despite multiple attempts at transfer learning, the model struggled to grasp modern text structures given our training setup before fine-tuning on Shakespearean data.
-
-<br>
-
-The best-trained model emerged when LLRD and warm-up steps were introduced, strategies not originally present in the DiffuSeq model.
 
 <br>
 

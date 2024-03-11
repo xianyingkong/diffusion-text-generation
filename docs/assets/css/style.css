@@ -125,6 +125,13 @@ img {
     margin-bottom: 1rem;
 }
 
+#very-small-img {
+    height: auto;
+    max-width: 50%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 #large-img {
     height: auto;
     max-width: 100%;
