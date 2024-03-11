@@ -7,14 +7,14 @@ page_image: shakespeare-picture.jpg
 ## **Introduction to Diffusion Models** {#background}
 {:refdef: style="text-align: center;"}
 ![diffusion_img](/assets/Fixed_Forward_Diffusion_Process.png){: style="text-align: center; display: block; margin: 0 auto;" #large-img}
-<p style="font-size: smaller; text-align: center;"> <span style="font-size: smaller;">Source: NVIDIA. <a href= "https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-1"> Link to Page</a></span></p>
+<p style="font-size: smaller; text-align: center; color: rgb(151, 151, 151);"> <span style="font-size: smaller; color: rgb(151, 151, 151);">Source: NVIDIA. <a href= "https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-1"> Link to Page</a></span></p>
 {: refdef}
 <br>
 Diffusion models are a type of generative model that simulates the natural data generation process. They are characterized by a forward process that adds random noise to the input sample and a reverse process that iteratively denoises noisy samples to generate high-quality samples that closely approximate its training data distribution.
 
 {:refdef: style="text-align: center;"}
 ![diffusion_gif](/assets/Diffusion_cropped.gif){: style="text-align: center; display: block; margin: 0 auto;" #small-img}
-<p style="font-size: smaller; text-align: center;"><span style="font-size: smaller;">Source:  NVIDIA. <a href= "https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-2/">Link to Page</a></span></p>
+<p style="font-size: smaller; text-align: center;"><span style="font-size: smaller; color: rgb(151, 151, 151);">Source:  NVIDIA. <a href= "https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-2/">Link to Page</a></span></p>
 {: refdef}
 <br>
 Diffusion networks such as DALL-E, Midjourney, and most recently SORA by OpenAI, have found success in the domain of images, videos and audios where data is inherently continuous. However, the application of diffusion models in natural language has been limited because **text is inherently discrete in nature.** Despite that, recent research has successfully applied continuous diffusion on text and shown breakthrough in conditional text generation. The success of diffusion models in conditional text generation can be attributed to the **end-to-end learning of feature and embedding space of text.**
@@ -24,7 +24,7 @@ Diffusion networks such as DALL-E, Midjourney, and most recently SORA by OpenAI,
 ## **Diffusion Models for Conditional Text Generation** {#methodology}
 {:refdef: style="text-align: center;"}
 ![Methodology Image](/assets/diffuseq-process.png){: style="text-align: center; display: block; margin: 0 auto;" #medium-img}
-<p style="font-size: smaller; text-align: center;"><span style="font-size: smaller;">Source: DiffuSeq. <a href= "https://github.com/Shark-NLP/DiffuSeq/">Link to Page</a></span></p>
+<p style="font-size: smaller; text-align: center;"><span style="font-size: smaller; color: rgb(151, 151, 151);">Source: DiffuSeq. <a href= "https://github.com/Shark-NLP/DiffuSeq/">Link to Page</a></span></p>
 {: refdef}
 <br>
 We follow the architecture of DiffuSeq (Gong et al. 2023) that **performs partial noising on a text sequence**. Given a source sequence (prompt) and a target sequence (response), DiffuSeq learns the feature and embedding spaces by partially corrupting the embedding space of a target sequence in the forward process. In the reverse process, the source sequence serves as guidance for denoising the noisy word embeddings to reconstruct the target sequence.
@@ -105,25 +105,25 @@ following diffusion steps and the prompt that was used.
 ![diffusion_img](/assets/model_comparison.JPG){: #very-small-img}
 {: refdef}
 
-Figure below visually depicts the embedding space of positive and negative words learned by our model and shows how the model can **clearly cluster similar words belonging to comedies or tragedies**.
+Figure 1 below visually depicts the embedding space of positive and negative words learned by our model and shows how the model can **clearly cluster similar words belonging to comedies or tragedies**.
 
 <br>
 
 {:refdef: style="text-align: center;"}
 ![diffusion_img](/assets/tragedies_comedies.png){: #very-small-img}
 {: refdef}
-<p style="font-size: large; text-align: center;"><strong style="font-size: smaller;">UMAP projection of word embeddings by positive and negative sentiments</strong></p>
+<p style="font-size: large; text-align: center;"><strong style="font-size: smaller;">Figure 1: UMAP projection of word embeddings by positive and negative sentiments</strong></p>
 
 <br>
 
-When the model is trained with character names at the start of each conversation in the source-target pairs, we find the our model is **able to capture some level of social network amongst the characters**. Figure visually depicts the embedding space of character names in selected plays and shows how our model can associate characters of the same play.
+When the model is trained with character names at the start of each conversation in the source-target pairs, we find the our model is **able to capture some level of social network amongst the characters**. Figure 2 below visually depicts the embedding space of character names in selected plays and shows how our model can associate characters of the same play.
 
 <br>
 
 {:refdef: style="text-align: center;"}
 ![diffusion_img](/assets/social_net.png){: #very-small-img}
 {: refdef}
-<p style="font-size: large; text-align: center;"><strong style="font-size: smaller;">UMAP projection of character names in selected famous plays</strong></p>
+<p style="font-size: large; text-align: center;"><strong style="font-size: smaller;">Figure 2: UMAP projection of character names in selected famous plays</strong></p>
 
 
 <br>
