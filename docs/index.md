@@ -24,7 +24,7 @@ Diffusion networks such as DALL-E, Midjourney, and most recently SORA by OpenAI,
 ## **Diffusion Models for Conditional Text Generation** {#methodology}
 {:refdef: style="text-align: center;"}
 ![Methodology Image](/assets/diffuseq-process.png){: style="text-align: center; display: block; margin: 0 auto;" #medium-img}
-<p style="font-size: smaller; text-align: center;"><span style="font-size: smaller;">Source: Github. <a href= "https://github.com/Shark-NLP/DiffuSeq/">Link to Page</a></span></p>
+<p style="font-size: smaller; text-align: center;"><span style="font-size: smaller;">Source: DiffuSeq. <a href= "https://github.com/Shark-NLP/DiffuSeq/">Link to Page</a></span></p>
 {: refdef}
 <br>
 We follow the architecture of DiffuSeq (Gong et al. 2023) that **performs partial noising on a text sequence**. Given a source sequence (prompt) and a target sequence (response), DiffuSeq learns the feature and embedding spaces by partially corrupting the embedding space of a target sequence in the forward process. In the reverse process, the source sequence serves as guidance for denoising the noisy word embeddings to reconstruct the target sequence.
