@@ -133,7 +133,7 @@ When the model is trained with character names at the start of each conversation
 Meet the team behind!
 
 ![Team Photo](/assets/team.jpg){: style="text-align: center; display: block; margin: 0 auto;" #small-img }
-<p style="font-size: smaller; text-align: center;">Left to Right: Alexander Jensen, Araya Mazumdar, Winfrey Kong, Joseph Samuel</p>
+<p style="font-size: smaller; text-align: center;">Left to Right: Alexander Jensen, (Mentor) Arya Mazumdar, Winfrey Kong, Joseph Samuel</p>
 <br>
 
 ## **Interesting Findings** {#findings}
