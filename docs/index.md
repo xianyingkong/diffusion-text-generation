@@ -7,14 +7,14 @@ page_image: shakespeare-picture.jpg
 ## **Introduction to Diffusion Models** {#background}
 {:refdef: style="text-align: center;"}
 ![diffusion_img](/assets/Fixed_Forward_Diffusion_Process.png){: style="text-align: center; display: block; margin: 0 auto;" #large-img}
-<p style="font-size: smaller; text-align: center;">Source: https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-1/</p>
+<p style="font-size: smaller; text-align: center;">Source: <a href= "https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-1">/</p>
 {: refdef}
 <br>
 Diffusion models are a type of generative model that simulates the natural data generation process. They are characterized by a forward process that adds random noise to the input sample and a reverse process that iteratively denoises noisy samples to generate high-quality samples that closely approximate its training data distribution.
 
 {:refdef: style="text-align: center;"}
 ![diffusion_gif](/assets/Diffusion_cropped.gif){: style="text-align: center; display: block; margin: 0 auto;" #small-img}
-<p style="font-size: smaller; text-align: center;">Source: https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-2/</p>
+<p style="font-size: smaller; text-align: center;">Source: <a href= "https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-2/></p>
 {: refdef}
 <br>
 Diffusion networks such as DALL-E, Midjourney, and most recently SORA by OpenAI, have found success in the domain of images, videos and audios where data is inherently continuous. However, the application of diffusion models in natural language has been limited because **text is inherently discrete in nature.** Despite that, recent research has successfully applied continuous diffusion on text and shown breakthrough in conditional text generation. The success of diffusion models in conditional text generation can be attributed to the **end-to-end learning of feature and embedding space of text.**
@@ -24,7 +24,7 @@ Diffusion networks such as DALL-E, Midjourney, and most recently SORA by OpenAI,
 ## **Diffusion Models for Conditional Text Generation** {#methodology}
 {:refdef: style="text-align: center;"}
 ![Methodology Image](/assets/diffuseq-process.png){: style="text-align: center; display: block; margin: 0 auto;" #medium-img}
-<p style="font-size: smaller; text-align: center;">Source: https://github.com/Shark-NLP/DiffuSeq/</p>
+<p style="font-size: smaller; text-align: center;">Source: <a href= "https://github.com/Shark-NLP/DiffuSeq/"></p>
 {: refdef}
 <br>
 We follow the architecture of DiffuSeq (Gong et al. 2023) that **performs partial noising on a text sequence**. Given a source sequence (prompt) and a target sequence (response), DiffuSeq learns the feature and embedding spaces by partially corrupting the embedding space of a target sequence in the forward process. In the reverse process, the source sequence serves as guidance for denoising the noisy word embeddings to reconstruct the target sequence.
