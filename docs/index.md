@@ -94,7 +94,7 @@ Notably, incorporating character names before dialogue improved the model's abil
 Meet the team behind!
 
 ![Team Photo](/assets/team.jpg){: style="text-align: center; display: block; margin: 0 auto;" #small-img }
-
+*Caption: Left = Alexander Jensen, Left-Middle = Araya Mazumdar, Right-Middle = Winfrey Kong, Right = Joseph Samuel*
 <br>
 
 ## **Interesting Findings** {#findings}
