@@ -62,6 +62,7 @@ Extensive effort is taken to clean the dataset, such as:
 Some notable experiments that we have conducted include:
 
 <br>
+
 - **Transfer Learning** 
     - Modern dialogue & Shakespeare plays &rarr; Shakespeare plays
     - Shakespeare plays &rarr; Comedies in Shakespeare plays only
@@ -81,7 +82,7 @@ Some notable experiments that we have conducted include:
 
 <br>
 
-Our final best-trained model has 2000 diffusion steps, 128 hidden dimension, 0.1 dropout rate, 0.0 weight decay, batch size of 30 and layer-wise learning rate decay of 0.9 with a starting learning rate of 0.0001 at the bottom-most layer (closest to input). The model is trained on 1 GPU with 30,000 epochs and 500 warm up steps, taking roughly 7-8 hours. The effect of reinitializing the last layer of the encoder transformer is negligible.
+Our final best-trained model has 1000 diffusion steps, 128 hidden dimension, 0.1 dropout rate, 0.0 weight decay, batch size of 30 and layer-wise learning rate decay of 0.9 with a starting learning rate of 0.0001 at the bottom-most layer (closest to input). The model is trained on 1 GPU with 30,000 epochs and 500 warm up steps, taking roughly 7-8 hours. The effect of reinitializing the last layer of the encoder transformer is negligible.
 
 <br>
 
