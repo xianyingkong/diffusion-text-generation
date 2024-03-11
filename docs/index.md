@@ -93,7 +93,7 @@ Notably, incorporating character names before dialogue improved the model's abil
 
 Meet the team behind!
 
-![Team Photo](/assets/team.jpg){: .center-image #small-img }
+![Team Photo](/assets/team.jpg){: style="text-align: center;" #small-img }
 
 <br>
 
