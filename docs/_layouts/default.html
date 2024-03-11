@@ -28,7 +28,12 @@
     <div class="intro">
         {% if page.page_image %}
         <div class="intro-image">
-            <img src="{{ '/assets/' | append: page.page_image | relative_url }}" id="large-img"/>
+        <figure>
+          <img src="{{ '/assets/' | append: page.page_image | relative_url }}" id="large-img" />
+          <figcaption>
+            <p><span style="font-size: smaller;">Source: Ms O Reilly's Education blog. <a href="https://5j31missoreilly.wordpress.com/2015/12/29/modern-day-shakespeare/"></a></span></p>
+          </figcaption>
+        </figure>
         </div>
         {% endif %}
         <div class="intro-content">
