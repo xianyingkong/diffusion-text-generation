@@ -92,9 +92,8 @@ Notably, incorporating character names before dialogue improved the model's abil
 ## **Team** {#team}
 
 Meet the team behind!
-{:refdef: style="text-align: center;"}
-![Team Photo](/assets/team.jpg){: #large-img}
-{: refdef}
+
+![Team Photo](/assets/team.jpg){: .center-image #large-img }
 
 <br>
 
