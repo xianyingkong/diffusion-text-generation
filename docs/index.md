@@ -128,15 +128,13 @@ When the model is trained with character names at the start of each conversation
 
 <br>
 
-## **Team** {#team}
-
-Meet the team behind!
+## **Meet the Team Behind** {#team}
 
 ![Team Photo](/assets/team.jpg){: style="text-align: center; display: block; margin: 0 auto;" #small-img }
 <p style="font-size: smaller; text-align: center;">Left to Right: Alexander Jensen, (Mentor) Arya Mazumdar, Winfrey Kong, Joseph Samuel</p>
 <br>
 
-## **Interesting Findings** {#findings}
+## **Discussion & Conclusion** {#findings}
 
 The experiments involved in training a text generation model based on Shakespearean plays and sonnets revealed several key findings. Initially attempting to train on a combination of plays and sonnets proved ineffective due to the distinct differences between conversational dialogue and poetic structures. Furthermore, despite multiple attempts at transfer learning, the model struggled to grasp modern text structures given our training setup before fine-tuning on Shakespearean data.
 
@@ -146,7 +144,15 @@ Cleaning the data was crucial for model performance, with the **method of senten
 
 <br>
 
-Last but not least, **randomizing the data** was deemed essential, as training on consecutive lines in any specific play led to poor performance due to the strong correlation between data samples within the same play.
+Moreover, **randomizing the data** was deemed essential, as training on consecutive lines in any specific play led to poor performance due to the strong correlation between data samples within the same play.
+
+<br>
+
+We find that our modified DiffuSeq lacks at upholding sentence coherence. We hypothesize that this could be attributed to the end-to-end training of embedding space (i.e. using a pre-trained embedding model should result in better sentence coherence) and quality of training data used to train these models.
+
+<br> 
+
+Last but not least, it is important to take into account the many different hyperparameters that can be adjusted, and to also consider the tradeoffs that these hyperparameters pose. Diffusion steps is an important hyperparameter, as it gives the model an easier prediction task with a larger amount of timesteps at the cost of slower sampling and the possibility of overfitting due to the smaller noise required to be predicted between each timestep.
 
 <br>
 <br>
