@@ -9,6 +9,8 @@ from constants import *
 import yaml, sys, os, io, json
 import torch
 import numpy as np
+import random
+from utils.data import load_jsonl
 
 
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
@@ -43,6 +45,15 @@ def set_new_seed():
     initialize_env(input_seed)
     response = {'seed_status': True}
     return jsonify(response)
+
+@app.route("/get_prompt", methods=['GET'])
+def get_prompt():
+    if not hasattr(app, 'prompt_resources'):
+        app.prompt_resources = load_jsonl("data/resources.jsonl")
+        
+    n = len(app.prompt_resources)
+    pick = random.randint(0, n-1)
+    return jsonify(app.prompt_resources[pick])
     
 
 def generate_samples_progressive(model, diffusion, tokenizer):

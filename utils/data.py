@@ -6,6 +6,14 @@ import datasets
 from datasets import Dataset as Dataset2
 import json
 
+def load_jsonl(fp):
+    data = []
+    with open(fp, 'r') as json_file:
+        for row in json_file:
+            content = json.loads(row)
+            data.append(content)
+    return data
+
 def load_data_text(
     batch_size, 
     seq_len, 

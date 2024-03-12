@@ -12,12 +12,14 @@
         <div class="container">
             <h1 class="title">Diffusion-Driven Shakespeare</h1>
             
+            <!-- Set Seed -->
+            
             <form action="{{url_for('set_new_seed')}}" method="post" id="seed-form">
                 <div class="form-inline row align-items-center">
                     <label class="mb-2" for="inlineFormInput"> Set a custom seed</label>
                     <div class="col-sm-3">
                         
-                        <input type="text" class="form-control mb-3" id="inlineFormInput" name="input_seed" value=102 required=required>
+                        <input type="text" class="form-control mb-3 col-sm-3" id="inlineFormInput" name="input_seed" value=102222 required=required>
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn btn-primary mb-3">Set Seed</button>
@@ -28,6 +30,33 @@
                 </div>
                 
             </form>
+            
+            <!-- Prompt Generator -->
+            
+            <form action="{{url_for('get_prompt')}}" method="get" id="get-prompt-form">
+                <div class="form-inline row align-items-center" style="margin-top: 1rem;">
+                    <label class="mb-2" for="generate-prompt">Use our prompt generator if you need some ideas!</label>
+                    <div class="col-sm-3">
+                        <button type="submit" class="btn btn-primary" id="generate-prompt">Random Prompt Generator</button>
+                    </div>
+                    
+                </div>
+            </form>
+            
+            <div class="prompt-generator-container" id="prompt-generator-container" style="display: none;">
+                <div class="row">
+                    <div class="random-prompt">
+                        <h3>Random Prompt</h3>
+                        <p id="random-prompt"></p>
+                    </div>
+                    <div class="random-prompt-description">
+                        <h3>Description</h3>
+                        <p id="random-prompt-description"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Generate text -->
         
             <form action="{{url_for('generate_response')}}" method="post" id="input-form">
                 <div class="form-group">
@@ -49,6 +78,8 @@
                     0%
                 </div>
             </div>
+            
+            <!-- Output container -->
     
             <div class="response-container" id="response-container" style="display: none;">
                 <div class="row">
@@ -62,6 +93,8 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Intermediate responses container -->
 
             <div class="inter-response-container" id="inter-response-container" style="display: none;">
                 <div class="row">
@@ -69,6 +102,10 @@
                     <div id="intermediate-output"></div>
                 </div>
             </div>
+            
+            <br>
+            <br>
+            <br>
 
         </div>
 
@@ -107,9 +144,15 @@
                 var newParagraph = '<p>' + data.inter_response + '</p>';
                 $('#intermediate-output').prepend(progressBarHTML + newParagraph);
             }
+            
+            function clearRandomPrompt() {
+                $('#response-container').hide();
+                $('#random-prompt').attr('')
+                $('#random-prompt-description').attr('')
+                $('#prompt-generator-container').hide();
+            }
 
             function clearOutputs() {
-                $('#response-container').hide();
                 $('#prompt').attr('');
                 $('#response').attr('');
                 $('#clear-results-btn').hide();
@@ -136,6 +179,26 @@
                         if (data.seed_status === true) {
                             $('#seed_set_success').show();
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+            
+            $('#get-prompt-form').submit(function(e) {
+                e.preventDefault();  // Prevent the form from submitting normally                
+                
+                // Send an AJAX request to the server
+                $.ajax({
+                    type: 'GET',
+                    url: '/get_prompt',
+                    success: function(data) {
+                        console.log(data)
+                        $('#prompt-generator-container').show();
+                        $('#random-prompt').text(data.src)
+                        $('#random-prompt-description').text(data.des)
                     },
                     error: function(xhr, status, error) {
                         // Handle errors
@@ -193,6 +256,7 @@
 
             // Clear results on button click
             $('#clear-results-btn').click(function() {
+                clearRandomPrompt();
                 clearOutputs();
                 clearInputs();
             });

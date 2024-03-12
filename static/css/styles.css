@@ -53,3 +53,16 @@
 #seed_set_success {
     color: darkgreen;
 }
+
+.prompt-generator-container {
+    border: 2px dashed #D3D3D3; /* Dashed border for prompt */
+    border-radius: 10px; /* Rounded corners */
+    padding: 15px; /* Add padding */
+    margin-bottom: 30px; /* Add some space between the prompt and response */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+}
+
+.prompt-generator-container h3 {
+    font-family: Goudy Old Style,Garamond,Big Caslon,Times New Roman,serif; 
+    font-weight: 900;
+}
