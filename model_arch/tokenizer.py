@@ -9,19 +9,20 @@ class myTokenizer():
     ################################################
     ### You can custome your own tokenizer here. ###
     ################################################
-    def __init__(self, vocab, config_name):
+    def __init__(self, vocab, vocab_fp):
         print(vocab)
         if vocab == 'bert':
-            tokenizer = AutoTokenizer.from_pretrained(config_name)
+            tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
             self.tokenizer = tokenizer
-            self.sep_token_id = tokenizer.sep_token_id
-            self.pad_token_id = tokenizer.pad_token_id
-            
+        elif vocab == 'custom':
+            tokenizer = BertTokenizerFast(vocab_fp)
+            self.tokenizer = tokenizer
         elif vocab == 'shakespeare':
             tokenizer = BertTokenizerFast('shakespeare-tokenizer-bert/plays/vocab.txt')
             self.tokenizer = tokenizer
-            self.sep_token_id = tokenizer.sep_token_id
-            self.pad_token_id = tokenizer.pad_token_id
+
+        self.sep_token_id = tokenizer.sep_token_id
+        self.pad_token_id = tokenizer.pad_token_id
         self.vocab_size = len(self.tokenizer)
     
     def encode_token(self, sentences):

@@ -1,20 +1,24 @@
-lr: 0.0001
-batch_size: 10
+# Tokenizer to tokenize words into embeddings
+tokenizer: 'shakespeare' # Change to either bert, shakespeare, or custom and modify custom_vocab_fp
+custom_vocab_fp: 'shakespeare-tokenizer-bert/plays/vocab.txt' # Change this for tokenizer vocabulary
+
+# Model hyperparameters
+lr: 0.0001 # Weight learning rate
+batch_size: 10 # Examples per data batch
 microbatch: 5
-epochs: 10
+epochs: 10 # Number of epochs to run
 eval_interval: 1000
 ema_rate: '0.9999' 
-schedule_sampler: 'uniform'
-diffusion_steps: 1000
+schedule_sampler: 'uniform' 
+diffusion_steps: 1000 # Number of timesteps/diffusion steps for the diffusion mode
 noise_schedule: 'sqrt'
-vocab: 'custom'
 use_plm_init: 'no' # embedding in transformer
-tokenizer: 'shakespeare'
 transformer: 'bert-base-uncased'
-seq_len: 128
-hidden_t_dim: 128
-hidden_dim: 128
-dropout: 0.1
+
+seq_len: 128 # Amount of tokens that can be processed at once
+hidden_t_dim: 128 # Dimension for the timestep embedding
+hidden_dim: 128 # Hidden dimension for the transformer
+dropout: 0.1 # Dropout rate for better learning
 seed: 102
 weight_decay: 0.0
 predict_xstart: True

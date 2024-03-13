@@ -15,7 +15,7 @@ if __name__ == '__main__':
     config = yaml.load(open(config_fp, 'r'), Loader=yaml.SafeLoader)
     set_seed(config['seed'])
     
-    tokenizer = load_tokenizer(config['tokenizer'], config['transformer'])
+    tokenizer = load_tokenizer(config['tokenizer'], config['custom_vocab_fp'])
     model_weight, tokenizer = load_model_emb(config['hidden_dim'], tokenizer)
     vocab_size = tokenizer.vocab_size
     print('Vocab size: ', vocab_size)
