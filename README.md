@@ -19,6 +19,7 @@ We have created files to help facilitate the process from data to trained model:
 - [Optional, but recommended] Create a virtual environment: `python -m venv .venv`
 - To install the dependencies, run the following command from the root directory of the project: `pip install -r requirements.txt`.
     - **Note that distutils is required, and your Python version must be less than or equal to `3.11`.**
+    - If your local desktop is running on CPU only, we recommend commenting out NVIDA requirements as we have noted some issues with downloading CUDA locally.
 - Alternative: There is also a [Docker image](https://github.com/users/alexander-jensen/packages/container/package/diffusion-image) that can also replicate the environment.
     - Run `docker pull ghcr.io/alexander-jensen/diffusion-image:latest` to pull the image.
     - `docker run --rm -it diffusion-image` runs the environment in which the next step can be followed.
