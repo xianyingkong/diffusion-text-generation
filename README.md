@@ -1,4 +1,8 @@
 # Diffusion Model For Text Generation - DSC180B B05
+
+## Application Demo
+![](https://github.com/xianyingkong/diffusion-text-generation/blob/main-app/diffu-final-app.gif)
+
 The website presentation for this project can be found [here](https://xianyingkong.github.io/diffusion-text-generation/).
 
 ## Requirements for Launching Application
