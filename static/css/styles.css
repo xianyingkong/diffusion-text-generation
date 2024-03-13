@@ -2,9 +2,12 @@
     margin-top: 50px;
 }
 
-.title {
+.title h1 {
     font-family: Goudy Old Style,Garamond,Big Caslon,Times New Roman,serif; 
     font-weight: 800;
+}
+
+.title {
     margin-bottom: 5rem;
 }
 
