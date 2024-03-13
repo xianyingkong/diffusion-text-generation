@@ -23,11 +23,11 @@ emb_scale_factor: 1.0
 data_dir: 'data'
 
 # sampling hyperparameters
-sampling_step: 1500
+sampling_step: 1000
 clip_denoised: False
 top_p: 0
 clamp_step: 0
 sampling_batch_size: 1
 inter_steps: [0.1, 0.3, 0.4, 0.5, 0.7, 0.9]
 sampling_seq_len: 128
-best_model_fp: 'models/final/model_df2000_dim128_new_data_best_epoch_23930_min_val_loss_0.02449999935925007.pkl'
+best_model_fp: 'models/final/model_comedies_only_df1000_best_epoch_7490_min_val_loss_0.02979999966919422.pkl'

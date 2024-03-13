@@ -13,47 +13,52 @@
             <h1 class="title">Diffusion-Driven Shakespeare</h1>
             
             <!-- Set Seed -->
-            
-            <form action="{{url_for('set_new_seed')}}" method="post" id="seed-form">
-                <div class="form-inline row align-items-center">
+            <div class="row">
+                <div class="col">
                     <label class="mb-2" for="inlineFormInput"> Set a custom seed</label>
                     <div class="col-sm-3">
                         
-                        <input type="text" class="form-control mb-3 col-sm-3" id="inlineFormInput" name="input_seed" value=102222 required=required>
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mb-3">Set Seed</button>
-                    </div>
-                    <div class="col-auto" id="seed_set_success" style="display: none;">
-                        <p><b>Successfully set seed!</b></p>
-                    </div>
-                </div>
-                
-            </form>
-            
-            <!-- Prompt Generator -->
-            
-            <form action="{{url_for('get_prompt')}}" method="get" id="get-prompt-form">
-                <div class="form-inline row align-items-center" style="margin-top: 1rem;">
-                    <label class="mb-2" for="generate-prompt">Use our prompt generator if you need some ideas!</label>
-                    <div class="col-sm-3">
-                        <button type="submit" class="btn btn-primary" id="generate-prompt">Random Prompt Generator</button>
+                        <form action="{{url_for('set_new_seed')}}" method="post" id="seed-form">
+                            <div class="form-inline row align-items-center">
+                                <input type="text" class="form-control mb-3 col-sm-3" id="inlineFormInput" name="input_seed" value=102222 required=required>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary mb-3">Set Seed</button>
+                            </div>
+                            <div class="col-auto" id="seed_set_success" style="display: none;">
+                                <p><b>Successfully set seed!</b></p>
+                            </div>
+                        </form>
                     </div>
                     
-                </div>
-            </form>
-            
-            <div class="prompt-generator-container" id="prompt-generator-container" style="display: none;">
-                <div class="row">
-                    <div class="random-prompt">
-                        <h3>Random Prompt</h3>
-                        <p id="random-prompt"></p>
+                <!-- Prompt Generator -->
+                <form action="{{url_for('get_prompt')}}" method="get" id="get-prompt-form">
+                    <div class="form-inline row align-items-center" style="margin-top: 1rem;">
+                        <label class="mb-2" for="generate-prompt">Use our prompt generator if you need some ideas!</label>
+                        <div class="col-sm-7">
+                            <button type="submit" class="btn btn-primary" id="generate-prompt">Random Prompt Generator</button>
+                        </div>
+
                     </div>
-                    <div class="random-prompt-description">
-                        <h3>Description</h3>
-                        <p id="random-prompt-description"></p>
+                </form>
+            </div>
+            <div class="col">
+                <div class="prompt-generator-container" id="prompt-generator-container"  style="display: none;">
+                    <div class="row">
+                        <div class="random-prompt">
+                            <h3>Random Prompt</h3>
+                            <p id="random-prompt">Prompt goes here</p>
+                        </div>
+                        <div class="random-prompt-description">
+                            <h3>Description</h3>
+                            <p id="random-prompt-description">Lorem ipsum</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <button type="button" class="btn btn-primary" id="use-random-prompt">Use this!</button>
                     </div>
                 </div>
+            </div>
             </div>
             
             <!-- Generate text -->
@@ -205,6 +210,13 @@
                         console.error(xhr.responseText);
                     }
                 });
+            });
+            
+            $('#use-random-prompt').click(function() {
+                console.log("hereeeeeee")
+                var randomPrompt = $('#random-prompt').text()
+                console.log(randomPrompt)
+                $('#enter-box').val(randomPrompt);
             });
 
             
