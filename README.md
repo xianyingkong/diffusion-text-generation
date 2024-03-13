@@ -16,3 +16,4 @@ The following files are important for launching the application:
 - `templates` - HTML and JavaScript can be found here
 - `static` - CSS can be found here
 - `config/config.yaml` - Configuration used to run the `app.py` file. This is mainly used to define parameters for the model.
+- `data/resources.jsonl` - A list of prompts in Shakespeare's style. This is for the random prompt generator.
