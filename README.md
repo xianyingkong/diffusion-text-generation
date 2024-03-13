@@ -1,5 +1,8 @@
 # Diffusion Model For Text Generation - DSC180B B05
 The website presentation for this project can be found [here](https://xianyingkong.github.io/diffusion-text-generation/).
+For our web application, go to branch `main-app`
+The embedding space vissualizer can be found [here](https://projector.tensorflow.org/?config=https://raw.githubusercontent.com/xianyingkong/diffusion-text-generation/main/projector/template_projector_config.json).
+
 ## Project Description
 This project aims to explore the ability to use diffusion models to generate text. More specifically we implemented the a diffusion model that is comprised of a BERT Transformer and is trained on Shakespeare text. We then measure the clarity and ability of the model to generate text that mimics Shakespeare's.
 
