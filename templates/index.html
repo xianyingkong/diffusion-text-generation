@@ -22,10 +22,11 @@
                             <div class="form-group">
                                 <label class="mb-2" for="inlineFormInput"> Set a custom seed</label>
                                 <input type="text" class="form-control mb-3 col-sm-3" id="inlineFormInput" name="input_seed" value=102222 required=required>
-                            </div>
-                            <div class="col-auto">
                                 <button type="submit" class="btn btn-primary mb-3">Set Seed</button>
                                 <p id="seed_set_success" style="display: none; overflow: hidden; white-space: nowrap;"><b>Successfully set seed!</b></p>
+                            </div>
+                            <div class="col-auto">
+                                
                             </div>
                             
                         </form>
@@ -155,9 +156,11 @@
                 $('#random-prompt').attr('')
                 $('#random-prompt-description').attr('')
                 $('#prompt-generator-container').hide();
+                $('#seed_set_success').hide();
             }
 
             function clearOutputs() {
+                $('#response-container').hide();
                 $('#prompt').attr('');
                 $('#response').attr('');
                 $('#clear-results-btn').hide();
@@ -194,7 +197,7 @@
             
             $('#get-prompt-form').submit(function(e) {
                 e.preventDefault();  // Prevent the form from submitting normally                
-                
+                $('#seed_set_success').hide();
                 // Send an AJAX request to the server
                 $.ajax({
                     type: 'GET',
@@ -213,9 +216,8 @@
             });
             
             $('#use-random-prompt').click(function() {
-                console.log("hereeeeeee")
+                $('#seed_set_success').hide();
                 var randomPrompt = $('#random-prompt').text()
-                console.log(randomPrompt)
                 $('#enter-box').val(randomPrompt);
             });
 
