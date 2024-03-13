@@ -7,23 +7,24 @@ If you are interested in training a mini-text diffusion model, the `data/mini-sh
 ## Files
 We have created files to help facilitate the process from data to trained model:
 - `config/config.yaml` - Configuration used to run the `run.py` folder. This is mainly used to define parameters for the model.
-- `create_tokenizer.py` - Given a filepath to corpus, creates a bert tokenizer that is able to tokenize each word in the corpus file.
-- `run.py` - Runs the train
+- `create_tokenizer.py` - Given a filepath to corpus, creates a bert tokenizer that is able to tokenize each word in the corpus file. 
+- `run.py` - Runs the training of the diffusion model. 
 ## To train the Text Diffusion model
 - Clone this repository locally
 - [Optional, but recommended] Create a virtual environment: `python -m venv .venv`
-- To install the dependencies, run the following command from the root directory of the project: `pip install -r requirements.txt`
+- To install the dependencies, run the following command from the root directory of the project: `pip install -r requirements.txt`.
+    - **Note that distutils is required, and your Python version must be less than or equal to `3.11`.**
 - Alternative: There is also a [Docker image](https://github.com/users/alexander-jensen/packages/container/package/diffusion-image) that can also replicate the environment.
     - Run `docker pull ghcr.io/alexander-jensen/diffusion-image:latest` to pull the image.
     - `docker run --rm -it diffusion-image` runs the environment in which the next step can be followed.
-- To train a model, run `python run.py`
+- To train a model, run `python run.py`. Any hyperparameters should be able to be changed within the `config/config.yaml` file, including number of timesteps, learning rate, epochs, etc.
     - This loads the mini Shakespeare data, trains a mini model with 100 epochs, and saves generated sequence into the `output/` directory
     - Note that 100 epochs are strictly insufficient for the model to learn and generate meaningful output. However, for convenience of user testing, we set the default as 100 epochs
 
-The specifications of experiment can be found in the config file in the `config/` directory
+The specifications of experiment can be found in the config file in the `config/` directory.
 
 ## Software & Spec
-All dependencies is listed in `requirements.txt` file. For all our experiments, we used 1 GPU
+All dependencies is listed in `requirements.txt` file. For all our experiments, we used 1-4 1080Ti/2080Ti GPUs, where 2-3 GPUs significantly sped up training.
 
 ## Reference
 - Gong, Shansan, et al. "Diffuseq: Sequence to sequence text generation with diffusion models." arXiv preprint arXiv:2210.08933 (2022).
