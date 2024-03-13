@@ -15,19 +15,19 @@
             <!-- Set Seed -->
             <div class="row">
                 <div class="col">
-                    <label class="mb-2" for="inlineFormInput"> Set a custom seed</label>
+                    
                     <div class="col-sm-3">
                         
                         <form action="{{url_for('set_new_seed')}}" method="post" id="seed-form">
-                            <div class="form-inline row align-items-center">
+                            <div class="form-group">
+                                <label class="mb-2" for="inlineFormInput"> Set a custom seed</label>
                                 <input type="text" class="form-control mb-3 col-sm-3" id="inlineFormInput" name="input_seed" value=102222 required=required>
                             </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary mb-3">Set Seed</button>
+                                <p id="seed_set_success" style="display: none; overflow: hidden; white-space: nowrap;"><b>Successfully set seed!</b></p>
                             </div>
-                            <div class="col-auto" id="seed_set_success" style="display: none;">
-                                <p><b>Successfully set seed!</b></p>
-                            </div>
+                            
                         </form>
                     </div>
                     
