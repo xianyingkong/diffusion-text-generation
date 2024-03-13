@@ -93,7 +93,7 @@ def create_tokenizer(corpus_path: str, vocab_size: int = 32000, save_folder=Fals
     if isinstance(save_folder, str):
         new_tokenizer.save_pretrained(save_folder) # Used for saving the tokenizer
         print(f'Tokenizer saved at {save_folder}')
-        print(f'Tokenizer can be loaded by BertTokenizerFast(vocab_file="{save_folder}")')
+        print(f'Tokenizer can be loaded by BertTokenizerFast(vocab_file="{save_folder}/vocab.txt")')
 
     
     return new_tokenizer
