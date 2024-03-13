@@ -18,7 +18,8 @@ We have created files to help facilitate the process from data to trained model:
     - Run `docker pull ghcr.io/alexander-jensen/diffusion-image:latest` to pull the image.
     - `docker run --rm -it diffusion-image` runs the environment in which the next step can be followed.
 - To train a model, run `python run.py`. Any hyperparameters should be able to be changed within the `config/config.yaml` file, including number of timesteps, learning rate, epochs, etc.
-    - This loads the mini Shakespeare data, trains a mini model with 100 epochs, and saves generated sequence into the `output/` directory
+    - This loads the mini Shakespeare data, trains a mini model with 100 epochs, and saves generated sequence into the `output/` directory.
+    - Inside your data directory should be at least the files: train.jsonl test.jsonl. It can also contain the files valid.jsonl and test_custom.jsonl for any custom prompts.
     - Note that 100 epochs are strictly insufficient for the model to learn and generate meaningful output. However, for convenience of user testing, we set the default as 100 epochs
 
 The specifications of experiment can be found in the config file in the `config/` directory.
