@@ -113,21 +113,21 @@ img {
 
 #medium-img {
     height: auto;
-    max-width: 90%;
+    max-width: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
 #small-img {
     height: auto;
-    max-width: 60%;
+    max-width: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
 #very-small-img {
     height: auto;
-    max-width: 50%;
+    max-width: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
@@ -139,3 +139,32 @@ img {
     /* margin-bottom: 1rem; */
 }
 
+@media only screen and (min-width: 600px) {
+    #medium-img {
+        height: auto;
+        max-width: 90%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    #small-img {
+        height: auto;
+        max-width: 60%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    #very-small-img {
+        height: auto;
+        max-width: 50%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    #large-img {
+        height: auto;
+        max-width: 100%;
+        margin-top: 1rem;
+        /* margin-bottom: 1rem; */
+    }
+}
