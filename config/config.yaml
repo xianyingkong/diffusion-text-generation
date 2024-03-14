@@ -15,7 +15,7 @@ seq_len: 128
 hidden_t_dim: 128
 hidden_dim: 128
 dropout: 0.1
-seed: 102
+seed: 10275679
 weight_decay: 0.0
 predict_xstart: True
 rescale_timesteps: True
@@ -29,5 +29,6 @@ top_p: 0
 clamp_step: 0
 sampling_batch_size: 1
 inter_steps: [0.1, 0.3, 0.4, 0.5, 0.7, 0.9]
-sampling_seq_len: 64
-best_model_fp: 'models/final/final_comedies_only_model_df1000.pkl'
+sampling_seq_len: 128
+# best_model_fp: 'models/final/final_comedies_only_model_df1000.pkl'
+best_model_fp: 'models/final/final_model_df1000.pkl'
