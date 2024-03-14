@@ -82,7 +82,7 @@ Some notable experiments that we have conducted include:
 
 <br>
 
-**The best-trained model emerged when LLRD and warm-up steps were introduced, strategies not originally present in the DiffuSeq model.**
+**The best-trained model emerged when LLRD and warm-up steps are introduced, strategies not originally present in the DiffuSeq model.**
 
 <br>
 
@@ -131,7 +131,7 @@ When the model is trained with character names at the start of each conversation
 ## **Meet the Team Behind** {#team}
 
 ![Team Photo](/assets/team.jpg){: style="text-align: center; display: block; margin: 0 auto;" #small-img }
-<p style="font-size: smaller; text-align: center;">Left to Right: Alexander Jensen, (Mentor) Arya Mazumdar, Winfrey Kong, Joseph Samuel</p>
+<p style="font-size: smaller; text-align: center;">Left to Right: Alexander Jensen, (Mentor) Arya Mazumdar, (Winfrey) Xian Ying Kong, Joseph Samuel</p>
 <br>
 
 ## **Discussion & Conclusion** {#findings}
