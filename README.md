@@ -22,7 +22,7 @@ We have created files to help facilitate the process from data to trained model:
     - If your local desktop is running on CPU only and is having issue with installing all requirements, we recommend commenting out NVIDA requirements as we have noted some issues with downloading CUDA locally.
 - Alternative: There is also a [Docker image](https://github.com/users/alexander-jensen/packages/container/package/diffusion-image) that can also replicate the environment.
     - Run `docker pull ghcr.io/alexander-jensen/diffusion-image:latest` to pull the image.
-    - `docker `run --rm -it ghcr.io/alexander-jensen/diffusion-image` runs the environment in which the next step can be followed.
+    - docker `run --rm -it ghcr.io/alexander-jensen/diffusion-image` runs the environment in which the next step can be followed.
     - You must clone the repository in the container
 - To train a model, run `python run.py`. Any hyperparameters should be able to be changed within the `config/config.yaml` file, including number of timesteps, learning rate, epochs, etc.
     - This loads the mini Shakespeare data, trains a mini model with 100 epochs, and saves generated sequence into the `output/` directory.
