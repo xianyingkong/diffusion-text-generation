@@ -31,4 +31,5 @@ sampling_batch_size: 1
 inter_steps: [0.1, 0.3, 0.4, 0.5, 0.7, 0.9]
 sampling_seq_len: 128
 # best_model_fp: 'models/final/final_comedies_only_model_df1000.pkl'
-best_model_fp: 'models/final/final_model_df1000.pkl'
+# best_model_fp: 'models/final/final_model_df1000.pkl'
+best_model_fp: 'models/final/model_comedies_30k_20k_df2000_1e-4_5e-5_best_epoch_7490_min_val_loss_0.02199999988079071.pkl'
