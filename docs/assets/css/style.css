@@ -102,6 +102,10 @@ a {
     text-decoration: none; /* Remove underlines */
 }
 
+#caption-link {
+    color: hwb(208 56% 28%) !important;
+}
+
 a:hover {
     text-decoration: underline; /* Underline on hover */
 }
