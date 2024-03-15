@@ -128,12 +128,6 @@ When the model is trained with character names at the start of each conversation
 
 <br>
 
-## **Meet the Team Behind** {#team}
-
-![Team Photo](/assets/team.jpg){: style="text-align: center; display: block; margin: 0 auto;" #small-img }
-<p style="font-size: smaller; text-align: center;">Left to Right: Alexander Jensen, (Mentor) Arya Mazumdar, (Winfrey) Xian Ying Kong, Joseph Samuel</p>
-<br>
-
 ## **Discussion & Conclusion** {#findings}
 
 The experiments involved in training a text generation model based on Shakespearean plays and sonnets revealed several key findings. Initially attempting to train on a combination of plays and sonnets proved ineffective due to the distinct differences between conversational dialogue and poetic structures. Furthermore, despite multiple attempts at transfer learning, the model struggled to grasp modern text structures given our training setup before fine-tuning on Shakespearean data.
@@ -153,6 +147,13 @@ We find that our modified DiffuSeq lacks at upholding sentence coherence. We hyp
 <br> 
 
 Last but not least, it is important to take into account the many different hyperparameters that can be adjusted, and to also consider the tradeoffs that these hyperparameters pose. Diffusion steps is an important hyperparameter, as it gives the model an easier prediction task with a larger amount of timesteps at the cost of slower sampling and the possibility of overfitting due to the smaller noise required to be predicted between each timestep.
+
+<br>
+
+## **Meet the Team Behind** {#team}
+
+![Team Photo](/assets/team.jpg){: style="text-align: center; display: block; margin: 0 auto;" #small-img }
+<p style="font-size: smaller; text-align: center;">Left to Right: Alexander Jensen, (Mentor) Arya Mazumdar, (Winfrey) Xian Ying Kong, Joseph Samuel</p>
 
 <br>
 <br>
