@@ -87,7 +87,7 @@ main {
 }
 
 footer {
-    background-color: #0056b3;
+    background-color: hwb(211 2% 15%);
     color: #fff;
     padding: 10px 20px;
     position: fixed;
@@ -98,7 +98,7 @@ footer {
 
 /* Links */
 a {
-    color: hwb(232 7% 50%); /* White links */
+    color: hsl(208, 89%, 48%); /* White links */
     text-decoration: none; /* Remove underlines */
 }
 
